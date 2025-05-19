@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Shantell_Sans } from "next/font/google";
 import "./globals.css";
+import { BottomNav } from "./components/BottomNav";
+import Greetings from "./components/Greetings";
+import Streaks from "./components/Streaks";
+import { StreakRefreshProvider } from "./context/StreakRefreshContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -10,6 +14,13 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const shantell = Shantell_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-shantell',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -23,11 +34,36 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${shantell.variable} antialiased`}>
+
+
+      <body className="">
+    <StreakRefreshProvider>
+
+        <div className={` flex justify-between w-full mx-auto`}>
+
+          {/* <div className="">
+            <h2 className="text-md inline-block text-red-600  ">100words.app
+            </h2>
+          </div> */}
+
+          {/* <div>
+        April 7, 2025
+          </div> */}
+
+{/* 
+          <div><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#a3a3a3" className="size-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
+          </svg>
+          </div> */}
+          {/* <div><p className="pl-4">Good mornin, Ivan! </p></div> */}
+        </div>
+
+        <Streaks />
         {children}
+        <BottomNav />
+
+        </StreakRefreshProvider>
       </body>
     </html>
   );
