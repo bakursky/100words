@@ -3,62 +3,32 @@
 
 import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client'
-import { format } from 'date-fns';
-import Streaks from '../components/Streaks';
-import { Modal } from '../components/Modal';
-import Greetings from '../components/Greetings';
-import { BottomNav } from '../components/BottomNav';
 import { useStreakRefresh } from '../context/StreakRefreshContext';
 
 
 
 export default function NotesPage() {
-    const [note, setNote] = useState<string>(localStorage.getItem('entry') || '');
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState(false);
-    const [feedNotes, setFeedNotes] = useState<Array<{ content: string; note_date: string }>>([]);
-    const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const [note, setNote] = useState<string>(''); 
 
     const [wordCount, setWordCount] = useState(0)
-    const today = new Date();
-    const formattedDate = format(today, 'yyyy-MM-dd');
 
     const {triggerRefresh} = useStreakRefresh()
 
-    useEffect(() => {
-        const noteFeed = async () => {
-            const supabase = await createClient()
-            const user = await supabase.auth.getUser()
-            const userId = user?.data?.user?.id
-
-            const { data, error } = await supabase
-                .from('notes')
-                .select('content, note_date')
-                .eq('user_id', userId)
-                .neq('note_date', formattedDate)
-                .order('note_date', { ascending: false });
-            if (error) {
-                console.error('Error fetching data:', error);
-            } else {
-                console.log(data);
-                setFeedNotes(data)
-            }
-        }
-        noteFeed()
-    }, [])
 
     useEffect(() => {
         // Fetch today's note when the component loads
+        const entry = localStorage.getItem('entry');
+        if (entry) {
+          setNote(entry);
+          setWordCount(entry.trim().split(/\s+/).length);
+        }
+        
         const fetchNote = async () => {
-            setLoading(true);
             const supabase = await createClient();
             const user = await supabase.auth.getUser();
             const userId = user?.data?.user?.id;
 
             if (!userId) {
-                setError('User not authenticated');
-                setLoading(false);
                 return;
             }
 
@@ -72,13 +42,12 @@ export default function NotesPage() {
                 .single();
 
             if (error && error.code !== 'PGRST116') {
-                setError(error.message);
+                console.log(error)
             } else if (data) {
                 setNote(data.content); // Load the note content
                 setWordCount(data.content.trim().split(/\s+/).length)
             }
 
-            setLoading(false);
         };
 
         fetchNote();
@@ -87,17 +56,13 @@ export default function NotesPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setLoading(true);
-        setError('');
-        setSuccess(false);
 
         const supabase = await createClient();
         const user = await supabase.auth.getUser();
         const userId = user?.data?.user?.id;
 
         if (!userId) {
-            setError('User not authenticated');
-            setLoading(false);
+            console.log('User not authenticated')
             return;
         }
 
@@ -108,18 +73,15 @@ export default function NotesPage() {
         });
 
         if (res.ok) {
-            setSuccess(true);
-            setRefreshTrigger(prev => prev + 1); // Trigger Streaks refresh
             triggerRefresh(); // 🔥
         } else {
             const errorData = await res.json();
-            setError(errorData.error);
+            console.log(errorData)
         }
 
-        setLoading(false);
     };
 
-    const handleChange = (e: any) => {
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setNote(e.target.value)
         localStorage.setItem('entry', e.target.value)
         const words = e.target.value.trim().split(/\s+/)

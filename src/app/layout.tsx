@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Shantell_Sans } from "next/font/google";
 import "./globals.css";
 import { BottomNav } from "./components/BottomNav";
-import Greetings from "./components/Greetings";
 import Streaks from "./components/Streaks";
 import { StreakRefreshProvider } from "./context/StreakRefreshContext";
 

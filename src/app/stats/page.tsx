@@ -1,7 +1,7 @@
 'use client'
 
 import { createClient } from "@/utils/supabase/client"
-import { eachDayOfInterval, format, getDaysInYear, isSameDay } from "date-fns"
+import { eachDayOfInterval, format, isSameDay } from "date-fns"
 import { useEffect, useState } from "react"
 
 export default function Stats() {
@@ -92,12 +92,12 @@ useEffect(() => {
             console.error('Error fetching data:', error);
         } else {
             if (data && data.length > 1) {
-                let noteMerged: Array<string> = []
+                const noteMerged: Array<string> = []
                 data.map((item) => {
                     noteMerged.push(item.content)                
                 })
                 // console.log('noteMerged', noteMerged)
-                let noteMergedWordCount = noteMerged.join(' ').trim().split(/\s+/).length
+                const noteMergedWordCount = noteMerged.join(' ').trim().split(/\s+/).length
                 setNotesText(noteMergedWordCount)
             }
         }
@@ -143,7 +143,7 @@ useEffect(() => {
                         )
                     })} */}
 
-                    {getAllDaysInYear().map((day, index) => {
+                    {getAllDaysInYear().map((day) => {
                         const hasNote = notesDateArray.some(note => isSameDay(note.note_date, day));
 
                         return (

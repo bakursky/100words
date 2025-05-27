@@ -1,4 +1,4 @@
-import { eachDayOfInterval, endOfMonth, format, getDate, getDay, isSameDay, isToday, startOfMonth } from "date-fns"
+import { eachDayOfInterval, endOfMonth, format, getDate, getDay, isToday, startOfMonth } from "date-fns"
 
 
 export const Calendar = ({ events }: { events: Array<number> }) => {
@@ -10,7 +10,6 @@ export const Calendar = ({ events }: { events: Array<number> }) => {
         end: lastDayOfMonth,
     })
 
-    const weekdays = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 
     const startingDayIndex = getDay(firstDayOfMonth)
 

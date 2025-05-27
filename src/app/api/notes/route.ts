@@ -77,6 +77,10 @@ export async function POST(request: Request) {
                     .from('streaks')
                     .update({ max_streak: newStreak })
                     .eq('user_id', userId); 
+
+                if (maxStreakError) {
+                    return NextResponse.json({ error: maxStreakError.message }, { status: 400 });
+                }
             }
 
 
@@ -88,6 +92,7 @@ export async function POST(request: Request) {
             return NextResponse.json({ message: 'Note saved successfully' }, { status: 200 });
         }
     } catch (err) {
+        console.error('Error processing note:', err);
         return NextResponse.json(
             { error: 'Invalid request payload' },
             { status: 400 }

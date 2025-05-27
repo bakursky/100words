@@ -5,22 +5,31 @@ import { createClient } from '@/utils/supabase/client'
 import { subDays, format, getDay, startOfWeek, addDays } from 'date-fns';
 import { useStreakRefresh } from '../context/StreakRefreshContext';
 
+interface Note {
+    id: string;
+    user_id: string;
+    note_date: string;
+    content?: string;
+    created_at?: string;
+}
+
 export default function Streaks() {
 
     const [currentStreak, setCurrentStreak] = useState<number>()
     const [maxStreak, setMaxStreak] = useState<number>()
-    const yesterday = subDays(new Date(), 1)
-    const formatDate = format(yesterday, 'yyyy-MM-dd')
-    const currentDate = new Date()
-    const todayIndex = getDay(currentDate)
-    const dayOfWeeks = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
-    const [notesMap, setNotesMap] = useState<any[]>([]);
+    const [notesMap, setNotesMap] = useState<Note[][]>([]);
     const formattedDate = format(new Date(), 'MMMM d, EEEE');
+    const todayIndex = getDay(new Date())
+    const dayOfWeeks = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 
     const { refreshKey } = useStreakRefresh()
 
     useEffect(() => {
         const fetchStreaks = async () => {
+            const currentDate = new Date()
+            const yesterday = subDays(currentDate, 1)
+            const formatDate = format(yesterday, 'yyyy-MM-dd')
+            
             const supabase = createClient()
             const user = await supabase.auth.getUser()
             const userId = user?.data?.user?.id
@@ -36,12 +45,15 @@ export default function Streaks() {
                 setMaxStreak(streak[0].max_streak)
 
             } else { //if streaks doesn't exists then create row
-                const { data, error } = await supabase
+                const { error } = await supabase
                     .from('streaks')
                     .insert([
                         { user_id: userId, current_streak: '0', max_streak: '0' },
                     ])
                     .select()
+                    if (error) {
+                        console.error('Row didnt created:', error);
+                    }
             }
 
             if (streakError) {
@@ -56,7 +68,7 @@ export default function Streaks() {
             if (streak) { //first streak cannot be dropped  && streak[0].current_streak !== 1
                 console.log('Checking streak condition:', streak[0].current_streak);
 
-                const { data: existingNote, error: fetchError } = await supabase
+                const { data: existingNote } = await supabase
                     .from('notes')
                     .select('id')
                     .eq('user_id', userId)
@@ -94,11 +106,11 @@ export default function Streaks() {
     }, [refreshKey])
 
     useEffect(() => {
-        let dateArray: Array<string> = []
+        const dateArray: Array<string> = []
         setNotesMap([])
 
         const weekTracker = async () => {
-            const weekStarts = startOfWeek(currentDate)
+            const weekStarts = startOfWeek(new Date())
             for (let i = 0; i < 7; i++) {
                 const date = addDays(weekStarts, i)
                 dateArray.push(format(date, 'yyyy-MM-dd'))
@@ -109,8 +121,6 @@ export default function Streaks() {
 
         const checkBd = async () => {
             const supabase = createClient()
-            const user = await supabase.auth.getUser()
-            const userId = user?.data?.user?.id
 
             for (const date of dateArray) {
                 const { data, error } = await supabase
@@ -118,16 +128,12 @@ export default function Streaks() {
                     .select('*')
                     .eq('note_date', date);
 
-                // notesMap[date] = data || null;
-
-                // notesMap.push(data)
-                setNotesMap(prevNotes => [...prevNotes, data])
+                setNotesMap(prevNotes => [...prevNotes, data || []])
                 console.log(notesMap)
 
-                // if (error) {
-                //     console.error(`Error fetching note for ${date}:`, error);
-                //     notesMap[date] = null;
-                // }
+                if (error) {
+                    console.error(`Error fetching note for ${date}:`, error);
+                }
             }
 
             return notesMap;
@@ -135,6 +141,7 @@ export default function Streaks() {
 
         weekTracker()
         checkBd()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [refreshKey])
 
 

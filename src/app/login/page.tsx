@@ -1,10 +1,8 @@
 'use client'
 
 import { createClient } from '@/utils/supabase/client'
-import { useState } from 'react'
 
 export default function LoginPage() {
-    const [error, setError] = useState<string | null>(null)
     const supabase = createClient()
 
 
@@ -17,7 +15,6 @@ export default function LoginPage() {
         })
 
         if (error) {
-            setError(error.message)
             console.error('Google OAuth Error:', error)
         }
     }
