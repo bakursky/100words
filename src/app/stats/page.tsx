@@ -116,11 +116,10 @@ useEffect(() => {
 
 
             {/* Year Progress */}
-            <div className="bg-neutral-800 rounded-3xl w-full h-36 p-3">
-                <p className="mb-2 text-neutral-400">Year activity</p>
+            <div className="component-bg w-full p-6 overflow-hidden">
 
 
-                <div className="flex gap-4 text-xs ml-2 mb-2">
+                <div className="flex gap-3 text-xs ml-2 mb-2 ">
                     {months.map((item) => {
                         return <div key={item}>{item}</div>
                     })}
@@ -158,11 +157,11 @@ useEffect(() => {
 
             {/* Other stats */}
             <div className="grid grid-flow-col grid-rows-2 gap-4 w-full mt-4">
-                <div className="bg-neutral-800 text-neutral-400 rounded-3xl p-4">Entries <p className="text-xl font-bold text-white">{notesDateArray.length}</p></div>
-                <div className="bg-neutral-800 text-neutral-400 rounded-3xl p-4">Current Streak <p className="text-xl font-bold text-white">{currentStreak}</p></div>
-                <div className="bg-neutral-800 text-neutral-400 rounded-3xl p-4">Longest Streak <p className="text-xl font-bold text-white">{maxStreak}</p></div>
-                <div className="bg-neutral-800 text-neutral-400 rounded-3xl p-4">Words <p className="text-xl font-bold text-white">{notesText}</p></div>
-                <div className="bg-neutral-800 text-neutral-400 rounded-3xl p-4">Writing frequency <p className="text-xl font-bold text-white">{((notesDateArray.length/getAllDaysInYear().length)*100).toFixed(2) + '%'}</p></div>
+                <div className="component-bg p-6">Entries <p className="text-xl font-bold text-white">{notesDateArray.length}</p></div>
+                <div className="component-bg p-6">Current Streak <p className="text-xl font-bold text-white">{currentStreak}</p></div>
+                <div className="component-bg p-6">Longest Streak <p className="text-xl font-bold text-white">{maxStreak}</p></div>
+                <div className="component-bg p-6">Words <p className="text-xl font-bold text-white">{notesText}</p></div>
+                <div className="component-bg p-6">Writing frequency <p className="text-xl font-bold text-white">{((notesDateArray.length/getAllDaysInYear().length)*100).toFixed(2) + '%'}</p></div>
             </div>
 
 

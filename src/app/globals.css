@@ -4,13 +4,16 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #191a1a;
+  --foreground: #141414FF;
   --textColor: #191a1a;
+  --component-bg: #1d1d1d;
+  --textarea-bg: #1d1d1d;
+  --accent: #b91c1c;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #191a1a;
+    --background: #141414FF;
     --textColor: #ededed;
     --foreground: #ededed;
   }
@@ -27,13 +30,14 @@ body {
   /* background-color: #f4dfe4; */
   /* background-color: #FFFBEE; */
   /* background-color: #191a1a; */
+  /* background: url("https://pbs.twimg.com/media/Gu8vgM9XAAAFpFo?format=jpg&name=large"); */
   /* background: url("https://img.freepik.com/free-vector/watercolor-sugar-cotton-clouds-background_23-2149230247.jpg"); */
   /* background: url("https://img.freepik.com/free-vector/watercolor-sugar-cotton-clouds-background_23-2149230247.jpg"); */
   /* backdrop-filter: blur(10px); */
-  /* background-repeat: no-repeat;
+   /* background-repeat: no-repeat;
   background-size: cover;
-  background-attachment: fixed; */
-  
+  background-attachment: fixed; 
+   */
   /* background: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Cfilter id='noise' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeBlend mode='screen'/%3E%3C/filter%3E%3Crect width='500' height='500' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");  */
   /* background-attachment: fixed; */
   /* mix-blend-mode: soft-light; */
@@ -41,7 +45,11 @@ body {
       /* background-image: url('/bg.png');
       background-size: cover;
       background-repeat: no-repeat;  */
+
+
+
 }
+
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
@@ -51,4 +59,34 @@ body {
 .scrollbar-hide {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+}
+
+.component-bg {
+  /* background: linear-gradient(var(--component-bg), var(--component-bg)) padding-box,
+              linear-gradient(to top, rgba(38, 38, 38, 0.5) 0%, rgba(74, 74, 74, 1) 100%) border-box; */
+  background: rgb(32, 32, 32);
+  /* background: linear-gradient(to top, #141414FF 0%, #1d1d1d 100%) border-box; */
+  border-radius: 40px;
+  border-top: 1px solid rgb(84, 84, 84);
+  box-shadow: 0px 1px 1px #0f0f0f80;
+  /* border: 1.5px solid transparent; */
+  /* backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px); */
+}
+
+.textarea-bg {
+  background: linear-gradient(to top, #141414FF 0%, #282828 100%) border-box;
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+  border-top: 1px solid rgb(84, 84, 84);
+  /* backdrop-filter: blur(10px); */
+}
+
+
+.red-button {
+  background: linear-gradient(var(--accent), var(--accent)) padding-box,
+              linear-gradient(to top, rgba(150, 2, 2, 1) 0%, rgba(255, 158, 158, 1) 100%) border-box;
+  border-radius: 100px;
+  /* border: 1.5px solid transparent; */
+  box-shadow: 0px 3px 10px 3px #b91c1c80;
 }

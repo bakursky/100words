@@ -14,6 +14,7 @@ export default {
       },
       fontFamily: {
         shantell: ['var(--font-shantell)'],
+        inria: ['var(--font-inria)'],
       },
     },
   },

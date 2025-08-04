@@ -82,13 +82,13 @@ export default function Entries() {
 
 
                 {feedNotes.map((item, index) => (
-                    <div key={`post-${index}`}  className="cursor-pointer bg-neutral-800 hover:bg-neutral-800/80 w-full rounded-2xl p-4 text-white">
+                    <div key={`post-${index}`}  className="component-bg p-6 w-full text-white">
 
                         <div className='text-neutral-500 text-sm '>
                             {format(new Date(item.note_date), 'MMMM d, yyyy')}
                         </div>
 
-                        <div className='text-neutral-200 whitespace-pre-line'>
+                        <div className='text-neutral-200 whitespace-pre-line font-inria'>
                             {item.content}
                         </div>
 

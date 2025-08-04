@@ -19,7 +19,7 @@ const inputHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
         onChange={inputHandler}
         placeholder="Search note..."
         type="search"
-        className="p-1 px-2 rounded-full border-[3px] border-neutral-800 bg-transparent placeholder:text-neutral-500 text-neutral-500 outline-none w-full"/>
+        className="component-bg w-full p-2 px-4 outline-none"/>
         </div>
         
         </>

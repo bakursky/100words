@@ -1,28 +1,23 @@
 // pages/notes.tsx
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client'
-import { useStreakRefresh } from '../context/StreakRefreshContext';
-
-
+import { useNote } from '../context/NoteContex';
+import { format } from 'date-fns';
 
 export default function NotesPage() {
-    const [note, setNote] = useState<string>(''); 
-
-    const [wordCount, setWordCount] = useState(0)
-
-    const {triggerRefresh} = useStreakRefresh()
-
+    const { note, setNote, setWordCount } = useNote()
+    const formattedDate = format(new Date(), 'MMMM d, EEEE');
 
     useEffect(() => {
         // Fetch today's note when the component loads
         const entry = localStorage.getItem('entry');
         if (entry) {
-          setNote(entry);
-          setWordCount(entry.trim().split(/\s+/).length);
+            setNote(entry);
+            setWordCount(entry.trim().split(/\s+/).length);
         }
-        
+
         const fetchNote = async () => {
             const supabase = await createClient();
             const user = await supabase.auth.getUser();
@@ -54,33 +49,6 @@ export default function NotesPage() {
     }, []);
 
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        const supabase = await createClient();
-        const user = await supabase.auth.getUser();
-        const userId = user?.data?.user?.id;
-
-        if (!userId) {
-            console.log('User not authenticated')
-            return;
-        }
-
-        const res = await fetch('/api/notes', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ content: note, userId }),
-        });
-
-        if (res.ok) {
-            triggerRefresh(); // 🔥
-        } else {
-            const errorData = await res.json();
-            console.log(errorData)
-        }
-
-    };
-
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setNote(e.target.value)
         localStorage.setItem('entry', e.target.value)
@@ -90,44 +58,27 @@ export default function NotesPage() {
 
 
     return (
-        <div className="h-full">
+        
+        <div className="flex h-full w-screen overflow-hidden">
+            
+                {/* Smooth fade-out overlay for textarea */}
+                {/* <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2 w-2/4 h-48 bg-gradient-to-t from-background via-background/95 via-background/85 via-background/70 via-background/50 via-background/25 to-transparent pointer-events-none z-10'></div> */}
+                
+                {/* Additional blur layer for extra smoothness */}
+                {/* <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2 w-2/4 h-24 bg-background/30 backdrop-blur-sm pointer-events-none z-10'></div> */}
+            <div className="flex flex-col w-full items-center justify-center mt-24 overflow-hidden">
+                <p className='text-xs text-white/30 absolute top-0 mt-28 z-10'>{formattedDate}</p> 
 
-
-
-
-                <form onSubmit={handleSubmit} className='h-full'>
-
-
-  
-                        <textarea
-                            value={note} 
-                            onChange={(e) => handleChange(e)}
-                            placeholder="Write your note here..."
-                            required
-                            spellCheck="false"
-                            className='caret-red-600 text-neutral-200 selection:bg-neutral-800 bg-transparent text-4xl w-full h-full outline-none resize-none scrollbar-hide -m-1 md:p-28 p-8'
-                        />
-
-
-                        {/* <div className='absolute text-sm text-red-600 bottom-0 right-0 mr-4 mb-4'>{wordCount} words</div> */}
-
-                    {/* <button type="submit" disabled={wordCount < 100} className=' mt-5 bg-red-700 disabled:bg-transparent disabled:border-dashed disabled:border-[1.5px] disabled:cursor-not-allowed disabled:text-current p-2 hover:scale-95 rounded-2xl text-white mr-2'>
-                        Publish
-
-                    </button> */}
-
-                    {/* {wordCount < 100 ? 'Write 100 word to activate button' : 'You did it 😉'} */}
-<button type="submit" disabled={wordCount < 100}  className='w-24 h-24 m-12 mb-24 rounded-full bg-red-600 disabled:bg-neutral-800 fixed bottom-0 right-0 '><span className='text-3xl font-bold'>{wordCount}</span></button>
-                </form>
-
-
-
-
-
-
-
-     
+                <textarea
+                    value={note}
+                    onChange={(e) => handleChange(e)}
+                    required
+                    spellCheck="false"
+                    className='textarea-bg bg-transparent font-inria caret-red-600 text-neutral-200 selection:bg-neutral-700/50 text-xl p-14 px-16 max-w-full w-2/4 h-screen outline-none resize-none scrollbar-hide'
+                />
+            </div>
 
         </div>
+
     );
 }

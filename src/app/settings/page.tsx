@@ -34,7 +34,7 @@ export default function Settings() {
     return (
         <div className='max-w-md mx-auto px-6 mt-24'>
 
-            <div className="flex items-center gap-4 bg-neutral-800 w-full rounded-2xl p-4 text-white">
+            <div className="flex items-center gap-4 w-full component-bg">
                 {userData && (
                     <Image
                         src={userData?.avatar_url}
