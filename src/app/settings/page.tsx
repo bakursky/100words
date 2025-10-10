@@ -1,54 +1,48 @@
 
 'use client'
-import { createClient } from "@/utils/supabase/client"
 import Image from "next/image";
-import { useEffect, useState } from "react"
 import { LogoutButton } from "../components/LogoutButton";
+import { useUserData } from "../hooks/useUserData";
+import { DownloadNotesButton } from "../components/DownloadNotesButton";
+import { useEffect, useState } from "react";
 
 
 export default function Settings() {
-
-    const [userData, setUserData] = useState<{ avatar_url: string; name: string; email: string } | null>(null);
+    const { data: user } = useUserData();
+    const [spellCheck, setSpellCheck] = useState(true);
 
     useEffect(() => {
-        const fetchUserData = async () => {
-            const supabase = createClient();
-            const { data: { user }, error } = await supabase.auth.getUser();
+        const stored = localStorage.getItem("spellCheck");
+        if (stored !== null) setSpellCheck(JSON.parse(stored));
+      }, []);
+    
+      useEffect(() => {
+        localStorage.setItem("spellCheck", JSON.stringify(spellCheck));
+      }, [spellCheck]);
 
-            if (error) {
-                console.error('Error fetching user data:', error);
-            } else if (user) {
-                console.log(user)
-                setUserData({
-                    avatar_url: user.user_metadata.avatar_url || '',
-                    name: user.user_metadata.name || 'User',
-                    email: user.user_metadata.email || 'User'
-                });
-            }
-        };
-
-
-        fetchUserData()
-    }, [])
 
     return (
-        <div className='max-w-md mx-auto px-6 mt-24'>
+        <div className='max-w-md mx-auto px-6'>
 
             <div className="flex items-center gap-4 w-full component-bg">
-                {userData && (
                     <Image
-                        src={userData?.avatar_url}
+                        src={user?.avatar_url || "/logo.png"}
                         width={100}
                         height={100}
                         alt="avatar"
                         className=" rounded-full"
                     />
-                )}
 
-                <p className="text-lg font-bold">{userData?.name} {userData?.email}</p>
+                <p className="font-semibold">{user?.name} {user?.email}</p>
             </div>
 
             <LogoutButton />
+
+            <DownloadNotesButton />
+            
+            <button onClick={()=> setSpellCheck(!spellCheck)} className="component-bg mt-4 w-full rounded-2xl p-4">Spell check: {spellCheck ? "On" : "Off"} 
+                <div className="text-xs text-neutral-500 ">If spell checker is not working, check if you have it enabled in your browser or disable extensions that can change it.</div>
+                </button>
         </div>
     )
 }
