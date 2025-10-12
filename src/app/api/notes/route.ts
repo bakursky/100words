@@ -5,7 +5,7 @@ export async function POST(request: Request) {
     // const today = new Date().toISOString().split('T')[0];
     //convert local time zone to UTC (supabase timestamps)
     const now = new Date();
-    const today = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString();
+    const today = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().split('T')[0];
 
     
     try {
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
         const todaysNote = data.find((note: { note_date: string }) => note.note_date === today)
 
         // If this is the first note of the day, update streak
-        console.log('⛏ todaysNote',todaysNote)
+        // console.log('⛏ todaysNote',todaysNote)
         
         if (!todaysNote) {
             const newStreak = currentStreak.current_streak + 1;

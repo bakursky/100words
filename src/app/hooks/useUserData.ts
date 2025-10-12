@@ -14,7 +14,7 @@ async function fetchUserData(): Promise<UserData | null> {
 
   if (error || !user) {
     console.error("Error fetching user:", error);
-    return null;
+    return null
   }
 
   return {

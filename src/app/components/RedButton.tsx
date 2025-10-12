@@ -2,10 +2,12 @@
 import { createClient } from '@/utils/supabase/client'
 import { useTextAreaStore } from '../store/textAreaStore';
 import { useQueryClient } from '@tanstack/react-query';
+import { useModalStore } from '../store/modalStore';
 
 export default function RedButton() {
     const {value} = useTextAreaStore()
     const queryClient = useQueryClient()
+    const {setModalOpen} = useModalStore()
 
     const wordCounter= () =>{
         const words = value.trim().split(/\s+/).filter(word => word.replace(/[^\p{L}\p{N}]/gu, '').length > 0)
@@ -34,6 +36,7 @@ export default function RedButton() {
         if (res.ok) {
             queryClient.invalidateQueries({ queryKey: ['streaks'] })
             queryClient.invalidateQueries({ queryKey: ['weekTracker'] })
+            setModalOpen(true)
 
         } else {
             const errorData = await res.json();

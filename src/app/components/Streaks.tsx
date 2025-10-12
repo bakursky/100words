@@ -4,15 +4,31 @@
 import {  format, getDay } from 'date-fns';
 import { useStreaks } from '../hooks/useStreaks';
 import { useWeekTracker } from '../hooks/useWeekTracker';
+import { useEffect, useState } from 'react';
+
+
 export default function Streaks() {
-
-
     const today = format(new Date(), 'PPP')
-    const todayIndex = getDay(new Date())
-    const dayOfWeeks = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
     const {data:streaks} = useStreaks()
     const { data:week } = useWeekTracker()
+    const [dayOfWeeks, setDayOfWeeks] = useState<string[]>(['','','','','','']);
+    const [stored, setStored] = useState<string | null>(null);
+    const todayIndex = (getDay(new Date()) - Number(stored || 0) + 7) %7
 
+    useEffect(() => {
+        const weekStartOn = localStorage.getItem("weekStartOn");
+        if (weekStartOn !== null) {
+            setStored(weekStartOn);
+        }
+    }, [week]);
+
+    useEffect(()=>{
+        let days: string[] = []
+        if (stored === '0'){days = ['S', 'M', 'T', 'W', 'T', 'F', 'S']}
+        if (stored === '1'){days = ['M', 'T', 'W', 'T', 'F', 'S', 'S']}
+        if (stored === '6'){days = ['S', 'S', 'M', 'T', 'W', 'T', 'F']}
+        setDayOfWeeks(days)
+    },[stored])
 
 
     return (

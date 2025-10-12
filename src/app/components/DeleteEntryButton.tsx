@@ -48,7 +48,7 @@ export default function DeleteEntryButton({ date }: { date: string }) {
             </Modal>
 
             <button onClick={() => setModalOpen(true)} className="text-red-800">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="#991b1b" d="M10 3a7 7 0 1 0 .001 13.999A7 7 0 0 0 10 3z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 20 20"><path fill="#991b1b" d="M10 3a7 7 0 1 0 .001 13.999A7 7 0 0 0 10 3z"/></svg>
             </button>
         </>
     )

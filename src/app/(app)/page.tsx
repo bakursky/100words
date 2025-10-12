@@ -3,27 +3,35 @@
 
 import { useEffect, useState } from 'react';
 import { endOfDay, intervalToDuration } from 'date-fns';
-import { useNotes } from "./hooks/useNotes";
-import { useTextAreaStore } from './store/textAreaStore';
+import { useNotes } from "../hooks/useNotes";
+import { useTextAreaStore } from '../store/textAreaStore';
+import { Modal } from '../components/Modal';
+import { useModalStore } from '../store/modalStore';
+import { useUserData } from '../hooks/useUserData';
+import { redirect } from 'next/navigation';
 
 export default function Home() {
     const { data: notes } = useNotes()
-    const [timer, setTimer] = useState({hours: 0, minutes: 0})
+    const [timer, setTimer] = useState({ hours: 0, minutes: 0 })
     const [spellCheck, setSpellCheck] = useState(true);
     const { value, setValue } = useTextAreaStore()
+    const { modalOpen, setModalOpen } = useModalStore()
+    const { data: user, isLoading } = useUserData()
+
+    useEffect(()=>{if (!isLoading && !user){redirect('/welcome')}}, [user, isLoading])
 
     useEffect(() => {
         const stored = localStorage.getItem("spellCheck");
         if (stored !== null) setSpellCheck(JSON.parse(stored));
-      }, []);
+    }, []);
 
 
     useEffect(() => {
         const now = new Date()
         const endOfToday = endOfDay(now)
         const duration = intervalToDuration({ start: now, end: endOfToday })
-        
-        setTimer({hours: duration.hours ?? 0, minutes: duration.minutes ?? 0})
+
+        setTimer({ hours: duration.hours ?? 0, minutes: duration.minutes ?? 0 })
     }, [])
 
     useEffect(() => {
@@ -56,8 +64,17 @@ export default function Home() {
     return (
 
         <div className="flex w-full overflow-hidden "
-        style={{ height: 'calc(100vh - 160px)' }}
+            style={{ height: 'calc(100vh - 160px)' }}
         >
+            <Modal
+                isOpen={modalOpen}
+                onClose={() => setModalOpen(false)}
+            >
+                <p>The day is closed! See you tomorrow, Legend!</p>
+                <div className="flex gap-2 justify-center">
+                    <button onClick={() => setModalOpen(false)} className="text-white/80 bg-neutral-700 p-2 rounded-full mt-2">Close</button>
+                </div>
+            </Modal>
 
             <div className={placeholderVisibility()}>
                 <div className='flex-col'>
@@ -67,14 +84,14 @@ export default function Home() {
             </div>
 
 
-                <textarea
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                    // required
-                    spellCheck={spellCheck}
-                    autoFocus
-                    className='bg-transparent w-96 mx-auto h-full caret-red-600 text-neutral-200 selection:bg-neutral-700/50 text-xl  outline-none resize-none scrollbar-hide'
-                    />
+            <textarea
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                // required
+                spellCheck={spellCheck}
+                autoFocus
+                className='bg-transparent w-96 mx-auto h-full caret-red-600 text-neutral-200 selection:bg-neutral-700/50 text-xl  outline-none resize-none scrollbar-hide'
+            />
 
         </div>
 

@@ -1,21 +1,26 @@
 'use client'
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 // import { Modal } from '../components/Modal';
-import { useNotes } from "../hooks/useNotes";
-import DeleteEntryButton from '../components/DeleteEntryButton';
+import { useNotes } from "@/app/hooks/useNotes";
+import DeleteEntryButton from '@/app/components/DeleteEntryButton';
+import { useUserData } from '@/app/hooks/useUserData';
+import { redirect } from 'next/navigation';
 
 export default function Entries() {
     const { data: notes } = useNotes();
+    const { data: user, isLoading } = useUserData()
     const [search, setSearch] = useState('');
 
-    const filterNotes = notes?.slice().reverse().filter((note) => {
-        const contentMatch = note.decrypted_content.toLowerCase().includes(search.toLowerCase());
-        return contentMatch;
+    useEffect(()=>{if (!isLoading && !user){redirect('/welcome')}}, [user, isLoading])
+
+    const filterNotes = notes?.slice()
+        .filter((note) => {
+            const contentMatch = note.decrypted_content.toLowerCase().includes(search.toLowerCase());
+            return contentMatch;
 
     })
-
 
     return (
         <div className='max-w-md mx-auto'>

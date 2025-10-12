@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Shantell_Sans, Inria_Serif } from "next/font/google";
 import "./globals.css";
-import { BottomNav } from "./components/BottomNav";
 import { ReactQueryProvider } from "./context/ReactQueryProvider";
-import Streaks from "./components/Streaks";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,11 +47,9 @@ export default async function RootLayout({
 
 
       <body>
-      <ReactQueryProvider> 
+        <ReactQueryProvider>
 
-              <Streaks />
-    {children}
-              <BottomNav />
+          {children}
 
         </ReactQueryProvider>
       </body>

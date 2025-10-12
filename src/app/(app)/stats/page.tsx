@@ -2,8 +2,10 @@
 
 import { eachDayOfInterval, format, isSameDay } from "date-fns"
 import { useEffect, useState } from "react"
-import { useNotes } from "../hooks/useNotes";
-import { useStreaks } from "../hooks/useStreaks";
+import { useNotes } from "@/app/hooks/useNotes";
+import { useStreaks } from "@/app/hooks/useStreaks";
+import { useUserData } from "@/app/hooks/useUserData";
+import { redirect } from "next/navigation";
 
 export default function Stats() {
     const currentDate = new Date()
@@ -11,6 +13,9 @@ export default function Stats() {
     const [wordCounter, setWordCounter] = useState<number>();
     const { data: notes } = useNotes();
     const { data: streaks } = useStreaks();
+    const { data: user, isLoading } = useUserData()
+
+    useEffect(()=>{if (!isLoading && !user){redirect('/welcome')}}, [user, isLoading])
 
 
     const getAllDaysInYear = () => {
