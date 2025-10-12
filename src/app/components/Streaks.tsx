@@ -11,7 +11,7 @@ export default function Streaks() {
     const today = format(new Date(), 'PPP')
     const {data:streaks} = useStreaks()
     const { data:week } = useWeekTracker()
-    const [dayOfWeeks, setDayOfWeeks] = useState<string[]>(['','','','','','']);
+    const [dayOfWeeks, setDayOfWeeks] = useState<string[]>(['','','','','','','']); // Add one more empty string
     const [stored, setStored] = useState<string | null>(null);
     const todayIndex = (getDay(new Date()) - Number(stored || 0) + 7) %7
 
