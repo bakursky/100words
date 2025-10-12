@@ -16,6 +16,6 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // Redirect to the homepage or dashboard
-  return NextResponse.redirect(new URL('/dashboard', request.url))
+  // Redirect to the homepage or main page
+  return NextResponse.redirect(new URL('/', request.url))
 }
