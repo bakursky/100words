@@ -55,7 +55,7 @@ export default function Stats() {
     // console.log('notesDateArray', notesDateArray)
 
     return (
-        <div className="max-w-md mx-auto">
+        <div className="max-w-md mx-auto mt-6 mb-20">
 
 
             {/* Year Progress */}

@@ -5,18 +5,16 @@ import { LogoutButton } from "@/app/components/LogoutButton";
 import { useUserData } from "@/app/hooks/useUserData";
 import { DownloadNotesButton } from "@/app/components/DownloadNotesButton";
 import { useEffect, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
-
 
 export default function Settings() {
     const { data: user, isLoading } = useUserData();
     const [spellCheck, setSpellCheck] = useState(true);
-    const [weekStartOn, setWeekStartOn] = useState(0);
-    const queryClient = useQueryClient()
     const [selectedValue, setSelectedValue] = useState('');
+    // const { setWeekStart } = useWeekStartStore()
+    // const [weekStart, setWeekStart] = useState('')
 
-    useEffect(()=>{if (!isLoading && !user){redirect('/welcome')}}, [user, isLoading])
+    useEffect(() => { if (!isLoading && !user) { redirect('/welcome') } }, [user, isLoading])
 
     //spellcheck logic
     useEffect(() => {
@@ -28,28 +26,25 @@ export default function Settings() {
         localStorage.setItem("spellCheck", JSON.stringify(spellCheck));
     }, [spellCheck]);
 
-    //first day of the week logic
     useEffect(() => {
         const stored = localStorage.getItem("weekStartOn");
         if (stored !== null){
-            setWeekStartOn(JSON.parse(stored));
-            setSelectedValue(stored)
+            const parsed = JSON.parse(stored).toString()
+            setSelectedValue(parsed)
+            // setWeekStart(parsed)
         } 
-  
     }, []);
 
-    useEffect(() => {
-        localStorage.setItem("weekStartOn", JSON.stringify(weekStartOn));
-        queryClient.invalidateQueries({ queryKey: ['weekTracker'] })
-    }, [weekStartOn, queryClient]);
 
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setWeekStartOn(Number(event.target.value))
-        setSelectedValue(event.target.value)
-      };
+        const value = event.target.value
+        setSelectedValue(value)
+        // setWeekStart(value) // This will update Streaks component immediately
+        localStorage.setItem("weekStartOn", JSON.stringify(Number(value)))
+    };
 
     return (
-        <div className='max-w-md mx-auto px-6'>
+        <div className='max-w-md mx-auto px-6 mt-6 mb-20'>
 
             <div className="flex items-center gap-4 w-full component-bg">
                 <Image
@@ -59,11 +54,14 @@ export default function Settings() {
                     alt="avatar"
                     className=" rounded-full"
                 />
-
-                <p className="font-semibold">{user?.name} {user?.email}</p>
+                
+                <div className="flex flex-col">
+                <p className="font-bold">{user?.name}</p>
+                <p>{user?.email}</p>
+                </div>
             </div>
 
-            <LogoutButton />
+
 
             <DownloadNotesButton />
 
@@ -72,7 +70,7 @@ export default function Settings() {
             </button>
 
             <div className="component-bg mt-4 w-full rounded-2xl p-4 text-center">
-                First day of the week:
+                <span>First day of the week: </span>
                 <select onChange={handleChange} value={selectedValue} className="bg-[#202020] rounded-full text-red-600">
                     <option value="6">Saturday</option>
                     <option value="0">Sunday</option>
@@ -80,6 +78,8 @@ export default function Settings() {
                 </select>
             </div>
 
+
+            <LogoutButton />
         </div>
     )
 }

@@ -1,55 +1,53 @@
-import { useState } from "react"
-import { Modal } from "./Modal"
 import { createClient } from '@/utils/supabase/client';
 import { useQueryClient } from "@tanstack/react-query";
+import { useModalStore } from "../store/modalStore";
 
 export default function DeleteEntryButton({ date }: { date: string }) {
-    const [modalOpen, setModalOpen] = useState(false)
+    const {setModalOpen} = useModalStore()
     const queryClient = useQueryClient()
+    const now = new Date();
+    const today = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().split('T')[0];
 
-    const deleteNote = async ()=>{
+    const deleteNote = async () => {
 
-            const supabase = await createClient()
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) return [];
+        const supabase = await createClient()
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
 
+
+        if (date === today) {
+            const { error } = await supabase
+                .from('notes')
+                .delete()
+                .eq('user_id', user.id)
+                .eq('note_date', today);
+
+            if (error) {
+                console.error('Error deleting note:', error);
+                return;
+            }
+        } else {
             const { error: rpcError } = await supabase.rpc('insert_or_update_note', {
-                p_content: 'Deleted',
+                p_content: '',
                 p_note_date: date
             });
-    
+
             if (rpcError) {
                 console.error(rpcError);
                 throw rpcError;
             }
+        }
 
-            queryClient.invalidateQueries({ queryKey: ['notes'] })
-            setModalOpen(false)
 
-    }
-
-    function onClose(){
+        queryClient.invalidateQueries({ queryKey: ['notes'] })
         setModalOpen(false)
+
     }
 
 
     return (
         <>
-            <Modal
-                isOpen={modalOpen}
-                onClose={() => setModalOpen(false)}
-            >
-                Delete this note permanently?
-                        
-                    <div className="flex gap-2 justify-center">
-                        <button onClick={()=>{deleteNote()}} className="text-white/80 bg-red-700 p-2 rounded-full mt-2">Delete</button>
-                        <button onClick={() => { onClose() }} className="text-white/80 bg-neutral-700 p-2 rounded-full mt-2">Close</button>
-                    </div>
-            </Modal>
-
-            <button onClick={() => setModalOpen(true)} className="text-red-800">
-                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 20 20"><path fill="#991b1b" d="M10 3a7 7 0 1 0 .001 13.999A7 7 0 0 0 10 3z"/></svg>
-            </button>
+            <button onClick={() => { deleteNote() }} className="text-white/80 bg-red-700 p-2 rounded-full mt-2">Delete</button>
         </>
     )
 }

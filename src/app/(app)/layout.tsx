@@ -1,6 +1,4 @@
 import { BottomNav } from "../components/BottomNav";
-import Streaks from "../components/Streaks";
-
 export default function AppLayout({
   children,
 }: {
@@ -8,7 +6,6 @@ export default function AppLayout({
 }) {
   return (
     <>
-      <Streaks />
       {children}
       <BottomNav />
     </>

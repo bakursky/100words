@@ -7,23 +7,29 @@ import { useNotes } from "@/app/hooks/useNotes";
 import DeleteEntryButton from '@/app/components/DeleteEntryButton';
 import { useUserData } from '@/app/hooks/useUserData';
 import { redirect } from 'next/navigation';
+import { Modal } from '@/app/components/Modal';
+import { useModalStore } from '@/app/store/modalStore';
+
 
 export default function Entries() {
     const { data: notes } = useNotes();
     const { data: user, isLoading } = useUserData()
     const [search, setSearch] = useState('');
+    // const [modalOpen, setModalOpen] = useState(false)
+    const {modalOpen, setModalOpen} = useModalStore( )
+    const [itemDate , setItemDate] = useState('')
 
-    useEffect(()=>{if (!isLoading && !user){redirect('/welcome')}}, [user, isLoading])
+    useEffect(() => { if (!isLoading && !user) { redirect('/welcome') } }, [user, isLoading])
 
     const filterNotes = notes?.slice()
         .filter((note) => {
             const contentMatch = note.decrypted_content.toLowerCase().includes(search.toLowerCase());
             return contentMatch;
 
-    })
+        })
 
     return (
-        <div className='max-w-md mx-auto'>
+        <div className='max-w-md mx-auto mt-6 mb-20'>
 
 
             <input
@@ -43,11 +49,14 @@ export default function Entries() {
 
                             <div className='text-neutral-500 text-sm flex justify-between'>
                                 {format(new Date(item.note_date), 'MMMM d, yyyy')}
-                                <DeleteEntryButton date={item.note_date}/>
+                                <button onClick={() => {setModalOpen(true); setItemDate(item.note_date)}} className="text-red-800">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 20 20"><path fill="#991b1b" d="M10 1.6a8.4 8.4 0 1 0 0 16.8a8.4 8.4 0 0 0 0-16.8zm5 9.4H5V9h10v2z" /></svg>
+                                </button>
                             </div>
 
-                            <div className='text-neutral-300 whitespace-pre-line'>
-                                {item.decrypted_content}
+                            <div className='pt-2 text-neutral-400 whitespace-pre-line break-words'>
+
+                                {item.decrypted_content === '' ? 'Deleted' : item.decrypted_content}
                             </div>
 
                         </div>
@@ -60,16 +69,18 @@ export default function Entries() {
 
             </div>
 
-                {/* 
-                //inside div  onClick={() => setSelectedNote(item)}
 
+            <Modal
+                isOpen={modalOpen}
+                onClose={() => setModalOpen(false)}
+            >
+                Delete this note permanently?
 
-                <Modal
-                    isOpen={selectedNote !== null}
-                    onClose={() => setSelectedNote(null)}
-                >
-                    {selectedNote?.content}
-                </Modal> */}
+                <div className="flex gap-2 justify-center">
+                    <DeleteEntryButton date={itemDate}/>
+                    <button onClick={() => {setModalOpen(false)}} className="text-white/80 bg-neutral-700 p-2 rounded-full mt-2">Close</button>
+                </div>
+            </Modal>
 
         </div>
     )

@@ -17,7 +17,7 @@ export function LogoutButton() {
 
   return (
     <>
-    <button onClick={handleLogout} className='mt-4 text-red-600 w-full rounded-2xl p-4 component-bg'>
+    <button onClick={handleLogout} className='mt-4 w-full rounded-2xl p-4 component-bg'>
       Logout
     </button>
     </>

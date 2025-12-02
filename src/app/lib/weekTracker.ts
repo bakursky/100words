@@ -4,9 +4,9 @@ import { createClient } from "@/utils/supabase/client";
 export async function fetchWeekNotes() {
   // const weekStart = startOfWeek(new Date());
   const supabase = await createClient();
-  const stored = localStorage.getItem("weekStartOn");
-  const weekStartOn = stored !== null ? JSON.parse(stored) : 0;
-  const weekStart = startOfWeek(new Date(), { weekStartsOn: weekStartOn as Day });
+  const dayItem = localStorage.getItem("weekStartOn");
+  const weekStartOn = dayItem !== null ? JSON.parse(dayItem) : 0;
+  const weekStart = startOfWeek(new Date(), { weekStartsOn: weekStartOn as Day });  
 
 
 
