@@ -31,7 +31,7 @@ const inria = Inria_Serif({
 
 export const metadata: Metadata = {
   title: "100 Words",
-  description: "Write 100 words a day to learn the #1 habit for mental health.",
+  description: "Write 100 words a day to learn the #1 habit for mental health",
 };
 
 export default async function RootLayout({

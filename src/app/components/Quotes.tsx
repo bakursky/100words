@@ -55,9 +55,9 @@ export default function Quotes() {
     }
 
     return (
-        <div className='component-bg p-6  text-neutral-600 font-semibold text-lg flex flex-col items-center text-center gap-2 mb-24 '>
+        <div className='component-bg p-6  text-neutral-500 font-semibold italic text-lg flex flex-col items-center text-center gap-2 mb-24 '>
             <div>{quotes[randomNumber].quote}</div>
-            <span className='text-sm text-red-700'>{quotes[randomNumber].author}</span>
+            <span className='text-sm text-neutral-300'>{quotes[randomNumber].author}</span>
         </div>
     )
 }

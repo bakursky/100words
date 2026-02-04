@@ -6,6 +6,7 @@ type TextAreaState = {
 }
 
 export const useTextAreaStore = create<TextAreaState>((set) => ({
+    
     value: "",
     setValue: (val) => set({value: val})
 }))

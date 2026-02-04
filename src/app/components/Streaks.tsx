@@ -63,7 +63,7 @@ export default function Streaks() {
         <div className='w-96 mx-auto'>
 
             <div className='flex flex-col w-full text-3xl mb-2 font-black text-neutral-600'>
-                <span className='text-lg text-red-700'>Today</span> {today}
+                <span className='text-lg text-neutral-300'>Today</span> {today}
             </div>
 
 
@@ -74,9 +74,9 @@ export default function Streaks() {
 
                 {dayOfWeeks.map((item, index) => {
                     const style = 'w-10 h-10 component-bg flex items-center justify-center'
-                    const today = 'w-10 h-10 component-bg flex items-center justify-center text-red-700'
+                    const today = 'w-10 h-10 component-bg border-2 border-neutral-600 rounded-full flex items-center justify-center'
 
-                    const streakDay = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="#b91c1c" d="M8.294 16.998c-.435 0-.847-.203-1.111-.553L3.61 11.724a1.392 1.392 0 0 1 .27-1.951a1.392 1.392 0 0 1 1.953.27l2.351 3.104l5.911-9.492a1.396 1.396 0 0 1 1.921-.445c.653.406.854 1.266.446 1.92L9.478 16.34a1.39 1.39 0 0 1-1.12.656c-.022.002-.042.002-.064.002z" /></svg>
+                    const streakDay = <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="#d4d4d4" d="M8.294 16.998c-.435 0-.847-.203-1.111-.553L3.61 11.724a1.392 1.392 0 0 1 .27-1.951a1.392 1.392 0 0 1 1.953.27l2.351 3.104l5.911-9.492a1.396 1.396 0 0 1 1.921-.445c.653.406.854 1.266.446 1.92L9.478 16.34a1.39 1.39 0 0 1-1.12.656c-.022.002-.042.002-.064.002z" /></svg>
 
                     return <div key={index} >
                         <p className={todayIndex === index ? today : style}> {week && week[index].length > 0 ? streakDay : item} </p>

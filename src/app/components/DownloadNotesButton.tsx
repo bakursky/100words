@@ -21,7 +21,7 @@ export function DownloadNotesButton() {
 
     return (
         <>
-            <button onClick={handleDownload} className='mt-4 w-full rounded-2xl p-4 component-bg'>
+            <button onClick={handleDownload} className='mt-4 w-full rounded-2xl p-4 component-bg text-white'>
                 Download notes
                 <div className="text-xs text-neutral-500 ">in .txt file</div>
             </button>

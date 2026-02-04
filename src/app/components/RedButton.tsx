@@ -68,6 +68,7 @@ export default function RedButton() {
                 body: JSON.stringify({ content: value, userId }),
             });
 
+
             if (res.ok) {
                 queryClient.invalidateQueries({ queryKey: ['notes'] })
                 queryClient.invalidateQueries({ queryKey: ['streaks'] })
@@ -77,9 +78,10 @@ export default function RedButton() {
                 // setModalOpen(true)
 
             } else {
-                const errorData = await res.json();
-                console.log(errorData)
+                const errorTextData = await res.json();
+                console.log(errorTextData)
             }
+
         } finally {
             setIsLoading(false)
         }
@@ -87,7 +89,7 @@ export default function RedButton() {
 
     const buttonColor = () => {
         const baseStyle = 'flex w-[65px] h-[65px] rounded-full items-center justify-center mb-8 text-xl font-bold text-white/70'
-        return wordCounter() < 100 ? baseStyle + ' bg-neutral-700' : baseStyle + ' bg-red-700 transition-all'
+        return wordCounter() < 100 ? baseStyle + ' bg-neutral-700' : baseStyle + ' bg-purple-700 transition-all'
     }
 
     return (

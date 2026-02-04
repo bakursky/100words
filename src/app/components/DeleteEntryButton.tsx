@@ -45,6 +45,7 @@ export default function DeleteEntryButton({ date }: { date: string }) {
     }
 
 
+
     return (
         <>
             <button onClick={() => { deleteNote() }} className="text-white/80 bg-red-700 p-2 rounded-full mt-2">Delete</button>
