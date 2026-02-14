@@ -28,7 +28,7 @@ export default function TodayEntryAiRecap() {
             const stored = JSON.parse(RecapItem)
 
             if (stored.todaysNote == todaysNote && stored.recap) {
-                setRecap(stored.recap)
+                setRecap(stored)
                 return
             } 
         }
@@ -40,7 +40,7 @@ export default function TodayEntryAiRecap() {
         if (todaysNote && todaysNote.trim().length > 0) {
             const fetchAiRecap = async () => {
                 try {
-                    const aiRes = await fetch("/api/ai", {
+                    const aiRes = await fetch("/api/ai/today-recap", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ message: todaysNote }),
@@ -68,15 +68,15 @@ export default function TodayEntryAiRecap() {
 
     if (paywallValue === 0) return null
     return (
-        <div className='flex-col w-96 h-full p-6 mt-4 bg-purple-900/50 rounded-[40px]'>
-            <div className='font-bold text-purple-400 flex mb-2'>
+        <div className='component-bg p-6 mt-4'>
+            <div className='font-bold mb-2'>
                 AI Recap
             </div>
 
             {recap ? (
-                <div className='text-purple-200 whitespace-pre-line break' dangerouslySetInnerHTML={{ __html: recap }}></div>
+                <div className='text-neutral-300 whitespace-pre-line break' dangerouslySetInnerHTML={{ __html: recap }}></div>
             ) : (
-                <p className='text-purple-200'>✦ Thinking...</p>
+                <p className='text-neutral-300'>✦ Thinking...</p>
             )}
 
         </div>

@@ -52,7 +52,7 @@ export async function fetchStreaks(): Promise<StreakData> {
     .eq("user_id", userId)
     .eq("note_date", yesterdayStr);
 
-  // reset streak if broken
+  // reset current streak (in case you don't have today and yesterday notes)
   if (!todayNote && yesterdayNotes?.length === 0) {
     current_streak = 0;
     const { error: resetError } = await supabase
@@ -61,6 +61,18 @@ export async function fetchStreaks(): Promise<StreakData> {
       .eq("user_id", userId);
     if (resetError) throw resetError;
   }
+
+  //decrease -1 when you deleting note (in case you have yesterday note)
+  // if (!todayNote && yesterdayNotes) {
+  //   const newStreak = current_streak - 1
+
+  //   const { error: resetError } = await supabase
+  //     .from("streaks")
+  //     .update({ current_streak: newStreak })
+  //     .eq("user_id", userId);
+  //   if (resetError) throw resetError;
+  // }
+
 
   return { current_streak, max_streak };
 }

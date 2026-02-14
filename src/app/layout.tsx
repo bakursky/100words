@@ -30,7 +30,7 @@ const inria = Inria_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "100 Words",
+  title: "100 words",
   description: "Write 100 words a day to learn the #1 habit for mental health",
 };
 

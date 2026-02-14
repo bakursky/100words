@@ -85,10 +85,20 @@ body {
   border-radius: 40px;
   /* border: 1px solid rgb(37, 37, 37); */
   /* border: 1px solid rgb(42, 42, 42); */
-  /* border-top: 1.5px solid rgb(40, 40, 40); */
+
+  border-top: 1.5px solid rgb(40, 40, 40);
+
+  /* border-bottom: 1.5px solid rgb(40, 40, 40); */
+  /* border-left: 1.5px solid rgb(40, 40, 40); */
+  /* border-right: 1.5px solid rgb(40, 40, 40); */
   /* backdrop-filter: blur(10px); */
   /* border-top: 1px solid rgb(84, 84, 84); */
   /* box-shadow: 0px 20px 20px #0f0f0f80; */
+}
+
+.btn {
+  border-radius: 40px;
+  border: 1px solid rgb(167, 167, 167);
 }
 
 .textarea-bg {

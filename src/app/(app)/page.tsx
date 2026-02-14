@@ -110,7 +110,7 @@ export default function Home() {
                     <button className='flex-col w-96 component-bg p-4' onClick={() => setNewEntryOpen(true)}>
                         <div className='flex items-center justify-center'><svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 20 20"><path fill="#525252" d="M4.254 19.567c.307-.982.77-2.364 1.391-4.362c2.707-.429 3.827.341 5.546-2.729c-1.395.427-3.077-.792-2.987-1.321c.091-.528 3.913.381 6.416-3.173c-3.155.696-4.164-.836-3.757-1.067c.939-.534 3.726-.222 5.212-1.669c.766-.745 1.125-2.556.813-3.202c-.374-.781-2.656-1.946-3.914-1.836c-1.258.109-3.231 4.79-3.817 4.754c-.584-.037-.703-2.098.319-4.013c-1.077.477-3.051 1.959-3.67 3.226c-1.153 2.357.108 7.766-.296 7.958c-.405.193-1.766-2.481-2.172-3.694c-.555 1.859-.568 3.721 1.053 6.194c-.611 1.623-.945 3.491-.996 4.441c-.024.759.724.922.859.493z" /></svg></div>
                         <div className='mt-4 text-neutral-500 font-semibold text-center'>You have <p className='inline-block text-neutral-300'>{timer.hours}h {timer.minutes}min</p> to close the day</div>
-                        <div className='mt-4 bg-purple-700 shadow-lg hover:scale-95 transition-all rounded-full p-2 font-semibold text-purple-300'>Write 100 words</div>
+                        <div className='mt-4 bg-stone-300 shadow-lg hover:scale-95 transition-all rounded-full p-2 font-semibold text-black'>Write 100 words</div>
                     </button>
                 </div>
             )}
