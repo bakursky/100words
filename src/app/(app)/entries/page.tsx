@@ -37,7 +37,7 @@ export default function Entries() {
                 type="search"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="fixed w-96 component-bg p-2 px-4 outline-none mb-6 border-2 border-purple-500 focus:border-neutral-700 text-white"
+                className="fixed w-96 rounded-full bg-neutral-700/30 backdrop-blur-lg p-2 px-4 outline-none mb-6 border-t-[1.5px] border-neutral-700 focus:border-0 text-white"
                 placeholder="Search note..."
             />
 

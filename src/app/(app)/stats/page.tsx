@@ -43,7 +43,7 @@ export default function Stats() {
 
 
     const cellStyleMissed = 'bg-neutral-700 w-1 h-1 rounded-full'
-    const cellStyleDone = 'bg-red-600 w-1 h-1 rounded-full'
+    const cellStyleDone = 'bg-neutral-300 w-1 h-1 rounded-full'
 
     // const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 

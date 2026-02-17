@@ -34,7 +34,7 @@ export default function NewEntry() {
 
     return (
         <>
-            <div className="bg-neutral-900 fixed inset-0 z-40 flex flex-col w-full">
+            <div className="bg-neutral-900/90 backdrop-blur-md  fixed inset-0 z-40 flex flex-col w-full">
 
                 <Modal
                     isOpen={modalOpen}
@@ -59,7 +59,7 @@ export default function NewEntry() {
 
                 <textarea
                     autoFocus
-                    className="bg-neutral-900 flex-1 p-14 resize-none outline-none text-2xl caret-purple-600 text-neutral-400 placeholder:text-neutral-600 selection:bg-neutral-700/50 scrollbar-hide"
+                    className="bg-transparent flex-1 p-14 resize-none outline-none text-2xl caret-neutral-400 text-neutral-400 placeholder:text-neutral-600 selection:bg-neutral-700/50 scrollbar-hide"
                     placeholder="Start writing..."
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
@@ -78,7 +78,7 @@ export default function NewEntry() {
 
                 <div className="w-full h-2">
                     <div
-                        className="bg-purple-700 h-2 transition-all duration-300"
+                        className="bg-neutral-800 h-2 transition-all duration-300"
                         style={{ width: `${Math.min((wordCounter() / 100) * 100, 100)}%` }}
                     ></div>
                 </div>

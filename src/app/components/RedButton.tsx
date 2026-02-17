@@ -88,8 +88,8 @@ export default function RedButton() {
     };
 
     const buttonColor = () => {
-        const baseStyle = 'flex w-[65px] h-[65px] rounded-full items-center justify-center mb-8 text-xl font-bold text-white/70'
-        return wordCounter() < 100 ? baseStyle + ' bg-neutral-700' : baseStyle + ' bg-purple-700 transition-all'
+        const baseStyle = 'flex w-[65px] h-[65px] rounded-full items-center justify-center mb-8 text-xl font-bold '
+        return wordCounter() < 100 ? baseStyle + ' bg-neutral-700 text-white/70' : baseStyle + ' bg-neutral-300 text-neutral-900 transition-all'
     }
 
     return (

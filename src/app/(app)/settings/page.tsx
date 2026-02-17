@@ -48,8 +48,8 @@ export default function Settings() {
 
     return (
         <div className='max-w-md mx-auto px-6 mt-6 mb-20'>
-            <div className='text-neutral-500 font-black text-3xl'>Settings</div>
-            <div className='text-lg text-neutral-300 font-black'>Profile</div>
+            {/* <div className='text-neutral-500 font-black text-3xl'>Settings</div> */}
+            {/* <div className='text-lg text-neutral-300 font-black'>Profile</div> */}
             <div className="flex flex-col items-center py-4 w-full component-bg">
                 <Image
                     src={user?.avatar_url || "/logo.svg"}
@@ -69,7 +69,7 @@ export default function Settings() {
             <LogoutButton />
 
 
-            <div className='text-lg text-neutral-300 font-black mt-4'>Editor and streaks</div>
+            {/* <div className='text-lg text-neutral-300 font-black mt-4'>Editor and streaks</div> */}
             {/* <div className="component-bg mt-4 p-4"> */}
 
                 <DownloadNotesButton />

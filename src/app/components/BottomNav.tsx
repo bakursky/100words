@@ -11,10 +11,10 @@ export function BottomNav() {
 
 
   return (
-    <div className="text-xs">
-      <div className="flex items-center justify-center gap-4 p-4 h-[60px] w-full bottom-0 fixed bg-[#1c1c1c] shadow-[0px_-15px_15px_0px_rgba(0,_0,_0,_0.1)] text-white/35 z-30 " >
+    <div className="max-w-full flex items-center justify-center">
+      <div className="w-96 flex items-center justify-center gap-8 p-4 h-[60px] rounded-full bottom-4 border-t-[1.5px] border-neutral-700 fixed bg-neutral-700/30 backdrop-blur-lg  text-white/35 z-30" >
 
-        <div className="flex gap-8">
+        <div className="flex gap-14">
 
           <button onClick={() => { router.push('/') }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 20 20" className={isActive('/') ? 'text-white' : 'text-white/35 hover:text-white'}><path fill="currentColor" d="M18.672 11H17v6c0 .445-.194 1-1 1h-4v-6H8v6H4c-.806 0-1-.555-1-1v-6H1.328c-.598 0-.47-.324-.06-.748L9.292 2.22c.195-.202.451-.302.708-.312c.257.01.513.109.708.312l8.023 8.031c.411.425.539.749-.059.749z" /></svg>
@@ -36,7 +36,7 @@ export function BottomNav() {
 
 
 
-        <div className="flex gap-4">
+        <div className="flex gap-14">
 
           <button onClick={() => { router.push('/stats') }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 20 20" className={isActive('/stats') ? 'text-white' : 'text-white/35 hover:text-white'}><path fill="currentColor" d="M20 2v16H.32c-.318 0-.416-.209-.216-.465l4.469-5.748a.526.526 0 0 1 .789-.062l1.419 1.334a.473.473 0 0 0 .747-.096l3.047-4.74a.466.466 0 0 1 .741-.09l2.171 2.096c.232.225.559.18.724-.1l5.133-7.785C19.51 2.062 19.75 2 20 2z" /></svg>

@@ -27,7 +27,8 @@ Journal entries to analyze:
     },
     body: JSON.stringify({
       // model: "meta-llama/llama-3.3-70b-instruct:free",
-      model: "tngtech/deepseek-r1t2-chimera:free",
+      // model: "tngtech/deepseek-r1t2-chimera:free",
+      model: "z-ai/glm-4.5-air:free",
       messages: [
         { role: "user", content: prompt + message }
       ],

@@ -28,7 +28,7 @@ export default function TodayEntryAiRecap() {
             const stored = JSON.parse(RecapItem)
 
             if (stored.todaysNote == todaysNote && stored.recap) {
-                setRecap(stored)
+                setRecap(stored.recap)
                 return
             } 
         }
