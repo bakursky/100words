@@ -40,11 +40,12 @@ export async function updateSession(request: NextRequest) {
   if (
     !user &&
     !request.nextUrl.pathname.startsWith('/login') &&
-    !request.nextUrl.pathname.startsWith('/auth')
+    !request.nextUrl.pathname.startsWith('/auth') &&
+    !request.nextUrl.pathname.startsWith('/welcome')
   ) {
-    // no user, potentially respond by redirecting the user to the login page
+    // no user, potentially respond by redirecting the user to the welcome page
     const url = request.nextUrl.clone()
-    url.pathname = '/landing/welcome'
+    url.pathname = '/welcome'
     return NextResponse.redirect(url)
   }
 
