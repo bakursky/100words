@@ -10,7 +10,6 @@ self.addEventListener("activate", event => {
 
 // Optional: very simple offline-first cache
 const CACHE_NAME = "100words-cache-v1";
-const MANIFEST_URLS = ['/manifest.webmanifest', '/manifest.json']; // Add manifest patterns
 
 self.addEventListener("fetch", event => {
   const { request } = event;
@@ -19,9 +18,9 @@ self.addEventListener("fetch", event => {
   // Only handle GET requests
   if (request.method !== "GET") return;
 
-  // ✅ DON'T cache the manifest - let Next.js handle it
-  if (url.pathname.includes('manifest')) {
-    return; // Let browser handle manifest requests directly
+  // Skip manifest requests - let browser handle them directly
+  if (url.pathname === '/manifest.webmanifest' || url.pathname === '/manifest.json') {
+    return;
   }
 
   event.respondWith(
@@ -29,11 +28,6 @@ self.addEventListener("fetch", event => {
       if (cached) return cached;
 
       return fetch(request).then(response => {
-        // Don't cache manifest responses
-        if (url.pathname.includes('manifest')) {
-          return response;
-        }
-        
         const responseClone = response.clone();
         caches.open(CACHE_NAME).then(cache => {
           cache.put(request, responseClone);
