@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Shantell_Sans, Inria_Serif } from "next/font/google"
 import "./globals.css";
 import { ReactQueryProvider } from "./context/ReactQueryProvider";
 import NewEntry from "./components/NewEntry";
+import { ServiceWorkerRegister } from "./components/ServiceWorkerRegister";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ const inria = Inria_Serif({
 export const metadata: Metadata = {
   title: "100 words",
   description: "Write 100 words a day to learn the #1 habit for mental health",
+  manifest: "/manifest.webmanifest",
 };
 
 export default async function RootLayout({
@@ -49,6 +51,7 @@ export default async function RootLayout({
 
       <body>
         <ReactQueryProvider>
+          <ServiceWorkerRegister />
           <NewEntry />
           {children}
         </ReactQueryProvider>
