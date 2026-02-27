@@ -70,7 +70,7 @@ export default function TodayEntryAiRecap() {
     return (
         <div className='component-bg p-6 mt-4'>
             <div className='font-bold mb-2'>
-                AI Recap
+                Daily review
             </div>
 
             {recap ? (

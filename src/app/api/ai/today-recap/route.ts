@@ -13,7 +13,7 @@ Give the answer in a strictly defined format with a friendly yet professional to
 [~25 words offering a supportive or reflective insight, as if from a coach or consultant]</p>
 <p><strong>✦ Suggestion</strong>
 [~25 words encouraging self-compassion, growth, or a gentle call to action]</p>
-<hr style="border: 1px solid #c084fc;"/>
+<hr style="border: 1px solid #737373;"/>
 <p><strong>Question for you: [generate a helpful reflection question based on the entries]</strong></p>
 
 Journal entries to analyze:

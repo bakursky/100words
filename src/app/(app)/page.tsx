@@ -2,7 +2,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { endOfDay, intervalToDuration } from 'date-fns';
+import { endOfDay, intervalToDuration, lastDayOfWeek } from 'date-fns';
 import { useNotes } from "../hooks/useNotes";
 import { useUserData } from '../hooks/useUserData';
 import { redirect } from 'next/navigation';
@@ -12,12 +12,12 @@ import Quotes from '../components/Quotes';
 import { useNewEntryStore } from '../store/newEntryStore';
 import { useTodaysNoteStore } from '../store/todaysNoteStore';
 import TodayEntryAiRecap from '../components/TodayEntryAiRecap';
+import WeeklyAiRecap from '../components/WeeklyAiRecap';
 
 export default function Home() {
     const { data: notes, isLoading: notesLoading, isPending: notesPending } = useNotes()
     const [timer, setTimer] = useState({ hours: 0, minutes: 0 })
-    // const { value, setValue } = useTextAreaStore()
-    // const [todaysNote, setTodaysNote] = useState('')
+    const [weekTimer, setWeekTimer] = useState({ days: 0, hours: 0, minutes: 0 })
 
     const isLoadingNotes = notesLoading || notesPending;
     const { data: user, isLoading } = useUserData()
@@ -32,7 +32,6 @@ export default function Home() {
         const now = new Date()
         const endOfToday = endOfDay(now)
         const duration = intervalToDuration({ start: now, end: endOfToday })
-
         setTimer({ hours: duration.hours ?? 0, minutes: duration.minutes ?? 0 })
     }, [])
 
@@ -40,27 +39,23 @@ export default function Home() {
         filterAndSetTodaysNote(notes);
     }, [notes, filterAndSetTodaysNote]);
 
+        useEffect(() => {
+        //don't remember about shift of the first day of the week
+        const dayItem = localStorage.getItem("weekStartOn");
+        const weekStartOn = dayItem !== null ? JSON.parse(dayItem) : 0;
 
-    // useEffect(() => {
-    //     const filterTodayNote = async () => {
-    //         const now = new Date()
-    //         const today = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().split('T')[0]
-    //         if (notes && notes.length > 0) {
-    //             const todaysNote = (notes.find(note => note.note_date === today))
-    //             // console.log(todaysNote?.decrypted_content)
-    //             if (todaysNote) {
-    //                 setTodaysNote(todaysNote.decrypted_content)
-    //                 setValue(todaysNote.decrypted_content)
-    //             }
-    //         }
+        //calculate time from now to the end day of the week
+        const now = new Date()
+        const lastWeekDay = lastDayOfWeek(now, { weekStartsOn: weekStartOn })
+        const duration = intervalToDuration({ start: now, end: lastWeekDay })
+        setWeekTimer({
+            days: duration.days ?? 0,
+            hours: duration.hours ?? 0,
+            minutes: duration.minutes ?? 0,
+        })
+        console.log(duration)
+    }, [])
 
-
-    //     }
-
-    //     filterTodayNote();
-    // }, [notes, setValue]);
-
-    // console.log('todaysNote2', notes)
 
     return (
 
@@ -103,7 +98,12 @@ export default function Home() {
                         <p className='text-neutral-200'>{todaysNote.slice(0, 250) + '...'}</p>
                         <button className='w-full mt-4 bg-neutral-700 rounded-full p-2 font-semibold text-white' onClick={() => setNewEntryOpen(true)}>Edit</button>
                     </div>
+                    
                     <TodayEntryAiRecap />
+
+                    {weekTimer.hours < 0 ? ( <WeeklyAiRecap /> ) : (null)
+
+            }
                 </div>
             ) : (
                 <div className=''>
