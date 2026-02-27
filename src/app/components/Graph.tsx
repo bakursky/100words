@@ -99,7 +99,7 @@ export default function Graph() {
                 padding: "0.35rem 0.5rem",
               }}
               labelFormatter={(value) => `Day ${value}`}
-              formatter={(value: number) => [`${value} words`, ""]}
+              formatter={(value?: number) => [`${value ?? 0} words`, ""]}
             />
 
             <Area
