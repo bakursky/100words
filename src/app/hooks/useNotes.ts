@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createClient } from "@/utils/supabase/client";
 
-export type Note = { id: string; user_id: string; note_date: string; decrypted_content: string; created_at?: string };
+export type Note = { id: string; user_id: string; note_date: string; decrypted_content: string };
 
 async function fetchNotes(): Promise<Note[]> {
   const supabase = await createClient();

@@ -9,18 +9,19 @@ export async function POST(request: Request) {
 
     
     try {
-        const { content, userId } = await request.json();
-        const supabase = await createClient();
+        const { content, userId, noteDate } = await request.json();
+   
 
-        if (!content || !userId) {
+        if (!content || !userId || !noteDate) {
             return NextResponse.json(
                 { error: 'Missing content or userId' },
                 { status: 400 }
             );
         }
 
-
+        const today = noteDate
  
+        const supabase = await createClient();
 
         // get streaks from db
         const { data: currentStreak, error: currentStreakError } = await supabase

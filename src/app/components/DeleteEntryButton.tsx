@@ -37,7 +37,7 @@ export default function DeleteEntryButton({ date }: { date: string }) {
 
             let current_streak = streak?.[0]?.current_streak;
 
-            if (current_streak > 1) {
+            if (current_streak > 0) {
                 const newStreak = current_streak - 1
                 const { error: resetError } = await supabase
                     .from("streaks")
@@ -67,7 +67,7 @@ setModalOpen(false)
 
 return (
     <>
-        <button onClick={() => { deleteNote() }} className="text-white/80 bg-red-700 p-2 rounded-full mt-2">Delete</button>
+        <button onClick={() => { deleteNote() }} className="text-neutral-800 font-semibold shadow-lg bg-neutral-300 p-2 px-4 rounded-full mt-2">Delete</button>
     </>
 )
 }

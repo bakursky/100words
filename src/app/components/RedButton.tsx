@@ -12,6 +12,15 @@ export default function RedButton() {
     // const {setModalOpen} = useModalStore()
     const { setNewEntryOpen } = useNewEntryStore()
     const [isLoading, setIsLoading] = useState(false)
+
+    const getTodayDateString = () => {
+      const now = new Date();
+      return new Date(
+        now.getTime() - now.getTimezoneOffset() * 60000
+      ).toISOString().split('T')[0]; // "YYYY-MM-DD"
+    };
+    
+
     const spinner = (        <svg 
         xmlns="http://www.w3.org/2000/svg" 
         width="50" 
@@ -62,10 +71,12 @@ export default function RedButton() {
                 return;
             }
 
+            const today = getTodayDateString();
+
             const res = await fetch('/api/notes', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ content: value, userId }),
+                body: JSON.stringify({ content: value, userId, noteDate: today }),
             });
 
 
