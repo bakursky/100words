@@ -196,7 +196,7 @@ const handleGoogleLogin = async () => {
   return (
     <>
       {/* ── NAV ─────────────────────────────────────────────────────────────── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-10 py-5 bg-[rgba(15,14,14,0.92)] backdrop-blur-2xl border-b border-[rgb(22,22,22)]">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-between px-10 py-5 bg-[rgba(15,14,14,0.9)] backdrop-blur-md border-t border-neutral-800 m-4 rounded-full w-[600px] mx-auto">
        
       <div className="flex gap-2 items-center"><Image src="/icon1.png" alt="100words logo" width={32} height={32} /> 
         <span className="text-base font-medium tracking-[-0.01em]">100 words</span>
@@ -215,7 +215,7 @@ const handleGoogleLogin = async () => {
       <main className="pt-[88px]">
 
         {/* ── HERO ────────────────────────────────────────────────────────────── */}
-        <section className="min-h-screen flex flex-col items-center justify-center text-center px-8 pt-24 pb-20">
+        <section className="min-h-screen flex flex-col items-center justify-center text-center px-8 pb-20">
 
           <p className="animate-fade-up delay-50 text-[13px] text-[#444] tracking-[0.08em] uppercase mb-8 font-normal">
             The #1 habit for mental health
