@@ -14,12 +14,12 @@ export default function TodayEntryAiRecap() {
 
     const { todaysNote } = useTodaysNoteStore()
     const [recap, setRecap] = useState('')
-    
+
     const { paywallValue } = usePaywallStore()
 
 
     useEffect(() => {
-        if (paywallValue === 0) return  
+        if (paywallValue === 0) return
         if (typeof window === 'undefined') return
 
         //check note from local storage. if it exist and matches from todays note → reuse ai recap
@@ -30,7 +30,7 @@ export default function TodayEntryAiRecap() {
             if (stored.todaysNote == todaysNote && stored.recap) {
                 setRecap(stored.recap)
                 return
-            } 
+            }
         }
 
         //clear recap to fire loading state
@@ -67,18 +67,20 @@ export default function TodayEntryAiRecap() {
     }, [todaysNote, paywallValue]);
 
     if (paywallValue === 0) return null
+
     return (
-        <div className='component-bg p-6 mt-4'>
-            <div className='font-bold mb-2'>
-                Daily review
+        <div className='rounded-[40px] bg-gradient-to-tr from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% p-1 mt-4'>
+            <div className="component-bg p-6">
+                <div className=' text-neutral-500 mb-2'>
+                    ✦ Daily review
+                </div>
+
+                {recap ? (
+                    <div className='text-neutral-300 whitespace-pre-line break' dangerouslySetInnerHTML={{ __html: recap }}></div>
+                ) : (
+                    <p className='text-neutral-300'>Thinking...</p>
+                )}
             </div>
-
-            {recap ? (
-                <div className='text-neutral-300 whitespace-pre-line break' dangerouslySetInnerHTML={{ __html: recap }}></div>
-            ) : (
-                <p className='text-neutral-300'>✦ Thinking...</p>
-            )}
-
         </div>
     )
 }

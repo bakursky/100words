@@ -7,13 +7,13 @@ You are an empathetic Gen-Z life coach and psychological consultant. Your role i
 
 Give the answer in a strictly defined format with a friendly yet professional tone, striking a balance between formal and informal communication.. Don't use emoji. Output format:
 
-<p><strong>✦ Quick summary</strong>
+<p><strong>Quick summary</strong>
 [~25 words summarizing the user’s key feelings with emoji or events, using empathetic language]</p>
-<p><strong>✦ Insights</strong>
+<p><strong>Insights</strong>
 [~25 words offering a supportive or reflective insight, as if from a coach or consultant]</p>
-<p><strong>✦ Suggestion</strong>
+<p><strong>Suggestion</strong>
 [~25 words encouraging self-compassion, growth, or a gentle call to action]</p>
-<hr style="border: 1px solid #737373;"/>
+<hr style="border: 1px solid #fffff;"/>
 <p><strong>Question for you: [generate a helpful reflection question based on the entries]</strong></p>
 
 Journal entries to analyze:
@@ -29,6 +29,7 @@ Journal entries to analyze:
       // model: "meta-llama/llama-3.3-70b-instruct:free",
       // model: "tngtech/deepseek-r1t2-chimera:free",
       model: "z-ai/glm-4.5-air:free",
+      // model: "moonshotai/kimi-k2.5",
       messages: [
         { role: "user", content: prompt + message }
       ],

@@ -1,10 +1,10 @@
-// app/page.tsx — Next.js 16, App Router, Server Component
-// Styled exclusively with Tailwind utility classes
 'use client'
 
-import type { Metadata } from "next";
+// import type { Metadata } from "next";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import { createClient } from "@/utils/supabase/client"
+import RedButton from "@/app/components/RedButton";
 
 
 // export const metadata: Metadata = {
@@ -119,90 +119,151 @@ const divider = "h-px bg-[rgb(22,22,22)] max-w-[1200px] mx-auto";
 const iconWrap = "w-12 h-12 rounded-2xl bg-[rgb(36,36,36)] flex items-center justify-center mb-6 shrink-0";
 
 // Primary button
-const btnP = "inline-flex items-center gap-2.5 bg-[#e8e6e3] text-[#0f0e0e] rounded-[14px] px-8 py-4 text-base font-medium transition-all duration-200 hover:opacity-85 hover:-translate-y-px whitespace-nowrap cursor-pointer";
+const btnP = "inline-flex items-center font-semibold gap-2.5 bg-[#e8e6e3] text-[#0f0e0e] rounded-full px-8 py-4 text-base font-medium transition-all duration-200 hover:opacity-85 hover:-translate-y-px whitespace-nowrap cursor-pointer";
 
 // Ghost button
-const btnG = "inline-block bg-transparent text-[#666] border border-[rgb(42,42,42)] rounded-[14px] px-8 py-4 text-base font-normal transition-all duration-200 hover:border-[rgb(66,66,66)] hover:text-[#e8e6e3] whitespace-nowrap";
+const btnG = "inline-block bg-transparent text-[#666] border border-[rgb(42,42,42)] rounded-full px-8 py-4 text-base font-normal transition-all duration-200 hover:border-[rgb(66,66,66)] hover:text-[#e8e6e3] whitespace-nowrap";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const quotes = [
-  { name: "Leo Tolstoy",     label: "Author — kept diaries for 63 years",           text: "I write to understand what I think. A thought unwritten is a thought half-formed. The diary is not a record of life — it is life itself, examined." },
-  { name: "Virginia Woolf",  label: "Author — wrote journals from age 15",            text: "The habit of writing for my eye is good practice. It loosens the ligaments. Never mind the misses and the stumbles." },
-  { name: "Marcus Aurelius", label: "Roman Emperor — Meditations, 161 AD",            text: "You have power over your mind, not outside events. Realize this, and you will find strength. The journal is where I found mine." },
-  { name: "Carl Jung",       label: "Psychiatrist — wrote the Red Book for 16 years", text: "Until you make the unconscious conscious, it will direct your life and you will call it fate. Writing is how I made it conscious." },
+  { name: "Leo Tolstoy", label: "Author — kept diaries for 63 years", text: "I write to understand what I think. A thought unwritten is a thought half-formed. The diary is not a record of life — it is life itself, examined." },
+  { name: "Virginia Woolf", label: "Author — wrote journals from age 15", text: "The habit of writing for my eye is good practice. It loosens the ligaments. Never mind the misses and the stumbles." },
+  { name: "Marcus Aurelius", label: "Roman Emperor — Meditations, 161 AD", text: "You have power over your mind, not outside events. Realize this, and you will find strength. The journal is where I found mine." },
+  { name: "Carl Jung", label: "Psychiatrist — wrote the Red Book for 16 years", text: "Until you make the unconscious conscious, it will direct your life and you will call it fate. Writing is how I made it conscious." },
 ];
 
 const science = [
-  { label: "Reduced symptoms of depression",  text: "A meta-analysis based on 26,927 participants found that higher gratitude was significantly associated with lower depression. Daily journaling is among the most reliable ways to cultivate that habit.",                                                                      url: "https://jamanetwork.com/journals/jama/2024" },
-  { label: "Reduced psychological distress",  text: "A 2023 meta-analysis found that journaling significantly reduced symptoms of psychological distress. The effect was strongest when people wrote consistently in short, focused sessions.",                                                                              url: "https://pubmed.ncbi.nlm.nih.gov/articles/PMC10730594/" },
-  { label: "Wide-ranging benefits",           text: "A 2023 meta-analysis found that expressive writing produced statistically significant improvements across depression, generalized anxiety, quality of life, mental disorder symptoms, and post-traumatic stress.",                                                      url: "https://www.jmir.org/2023/1/e43862" },
+  { label: "Reduced symptoms of depression", text: "A meta-analysis based on 26,927 participants found that higher gratitude was significantly associated with lower depression. Daily journaling is among the most reliable ways to cultivate that habit.", url: "https://jamanetwork.com/journals/jama/2024" },
+  { label: "Reduced psychological distress", text: "A 2023 meta-analysis found that journaling significantly reduced symptoms of psychological distress. The effect was strongest when people wrote consistently in short, focused sessions.", url: "https://pubmed.ncbi.nlm.nih.gov/articles/PMC10730594/" },
+  { label: "Wide-ranging benefits", text: "A 2023 meta-analysis found that expressive writing produced statistically significant improvements across depression, generalized anxiety, quality of life, mental disorder symptoms, and post-traumatic stress.", url: "https://www.jmir.org/2023/1/e43862" },
 ];
 
 const whyItems = [
-  { Icon: IconLock,  title: "Fully private",      desc: "No ads, no algorithms, no one reading over your shoulder. Your journal is yours — stored securely and never shared." },
-  { Icon: IconPen,   title: "100 words, no more", desc: "The constraint is the feature. A short, achievable daily goal makes journaling sustainable for years, not days." },
+  { Icon: IconLock, title: "Fully private", desc: "No ads, no algorithms, no one reading over your shoulder. Your journal is yours — stored securely and never shared." },
+  { Icon: IconPen, title: "100 words, no more", desc: "The constraint is the feature. A short, achievable daily goal makes journaling sustainable for years, not days." },
   { Icon: IconHeart, title: "No AI ghostwriting", desc: "We don't suggest what to write or complete your sentences. The reflection is entirely yours — that's what makes it work." },
-  { Icon: IconSun,   title: "Built-in momentum",  desc: "Streaks, word counts, and gentle nudges keep you showing up every day. Habit science baked in from day one." },
+  { Icon: IconSun, title: "Built-in momentum", desc: "Streaks, word counts, and gentle nudges keep you showing up every day. Habit science baked in from day one." },
 ];
 
 const forWhom = [
-  { Icon: IconMirror, title: "Self-reflectors",    desc: "People who want to understand themselves better and watch how they change over time." },
-  { Icon: IconBook,   title: "Writers",             desc: "A daily practice that sharpens craft, clears creative blocks, and captures raw material." },
-  { Icon: IconGlobe,  title: "Language learners",   desc: "Write in your target language every day. 100 words is the perfect daily challenge." },
-  { Icon: IconLeaf,   title: "Anyone under stress", desc: "Five quiet minutes to empty your mind onto the page can genuinely change your day." },
+  { Icon: IconMirror, title: "Self-reflectors", desc: "People who want to understand themselves better and watch how they change over time." },
+  { Icon: IconBook, title: "Writers", desc: "A daily practice that sharpens craft, clears creative blocks, and captures raw material." },
+  { Icon: IconGlobe, title: "Language learners", desc: "Write in your target language every day. 100 words is the perfect daily challenge." },
+  { Icon: IconLeaf, title: "Anyone under stress", desc: "Five quiet minutes to empty your mind onto the page can genuinely change your day." },
 ];
 
 const features = [
-  { Icon: IconGlobe,  title: "Works everywhere",       desc: "Sign in with Google. No install required. Your journal is accessible from any device, any browser." },
-  { Icon: IconPen,    title: "Zero friction writing",   desc: "No formatting, no distracting prompts, no AI suggestions. Just an empty page and your words." },
-  { Icon: IconShield, title: "Fully private",           desc: "Your entries are encrypted before they leave your device. We cannot read them — even if we wanted to." },
-  { Icon: IconFlame,  title: "Streak & habit tracking", desc: "Visual streaks and writing patterns help you build a habit that actually sticks over time." },
-  { Icon: IconZap,    title: "Designed constraints",    desc: "The 100-word limit makes journaling feel focused and achievable. Constraints create freedom." },
-  { Icon: IconPhone,  title: "Write from anywhere",     desc: "The experience is optimized for mobile — write in bed, on a walk, whenever the mood arrives." },
+  { Icon: IconGlobe, title: "Works everywhere", desc: "Sign in with Google. No install required. Your journal is accessible from any device, any browser." },
+  { Icon: IconPen, title: "Ultra-minimalist", desc: "No formatting, no distracting prompts, no AI suggestions. Just an empty page and your words." },
+  { Icon: IconShield, title: "Fully private", desc: "Your data is encrypted at the high-security database. This means the second your 100 words hit the database, they are instantly scrambled into unreadable code (AES-256-GCM)." },
+  { Icon: IconFlame, title: "Streak & habit tracking", desc: "Visual streaks and writing patterns help you build a habit that actually sticks over time." },
+  { Icon: IconZap, title: "Designed constraints", desc: "The 100-word limit makes journaling feel focused and achievable. Constraints create freedom." },
+  { Icon: IconPhone, title: "Export", desc: "Export entries as plain text at any time you want" },
 ];
 
 const faq = [
-  { q: "Will my journal entries stay private?",     a: "Yes, completely. Your entries are encrypted before leaving your device. End-to-end encryption means even we cannot read your journal. Your words belong to you alone." },
+  { q: "Will my journal entries stay private?", a: "We use AES-256-GCM authenticated encryption to protect every entry. Your data is encrypted at the database level, meaning even if someone gained access to the raw database, your words would look like a chaotic string of random characters. With Row-Level Security (RLS) combined with encryption, only your authenticated session can trigger the decryption process." },
   { q: "Is the app available for Android and iOS?", a: "100 Words is a Progressive Web App. Install it on Android or iOS directly from your browser — no app store required. It works offline, too." },
-  { q: "Can I export my journal entries?",          a: "Yes. Download all your data in plain text or CSV at any time. Your journal is yours — we never lock you in. Export is free on all plans." },
-  { q: "Why exactly 100 words?",                    a: "100 words is long enough to express a complete thought, and short enough to do every single day. Most people finish in 4–6 minutes. The constraint is the feature." },
+  { q: "Can I export my journal entries?", a: "Yes. Download all your data in plain text or CSV at any time. Your journal is yours — we never lock you in. Export is free on all plans." },
   { q: "Does the Pro plan use AI to write for me?", a: "No. AI in Pro only reads and reflects back — it offers insights and patterns after you've written. It never writes entries for you. The words are always yours." },
 ];
 
 const freeFeatures = ["Unlimited notes", "No ads", "Export your data", "Privacy first", "Unlimited devices"];
-const proFeatures  = ["Everything in Free", "AI review & insights", "Writing suggestions", "Analytics & charts", "Entry search"];
+const proFeatures = ["Everything in Free", "Daily AI review", "Weekly AI review", "Random note feature", "And more.."];
 
 const streakDays = [true, true, true, true, true, true, false];
+
+function handleSubmit() {
+
+}
+
+// ─── Scroll-reveal word-by-word text ─────────────────────────────────────────
+
+function ScrollRevealText({ text, className }: { text: string; className?: string }) {
+  const containerRef = useRef<HTMLParagraphElement | null>(null);
+  const [visibleWords, setVisibleWords] = useState(0);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const wordsTotal = text.split(" ").length;
+
+    const handleScroll = () => {
+      const rect = el.getBoundingClientRect();
+      const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+      const start = windowHeight * 0.2;
+      const end = windowHeight * 0.8;
+
+      const rawProgress = 1 - (rect.top - start) / (end - start);
+      const clamped = Math.min(1, Math.max(0, rawProgress));
+      const nextVisible = Math.round(clamped * wordsTotal);
+
+      setVisibleWords(nextVisible);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [text]);
+
+  const words = text.split(" ");
+
+  return (
+    <p ref={containerRef} className={className}>
+      {words.map((word, index) => {
+        const isVisible = index < visibleWords;
+        if (!isVisible) return null;
+        return (
+          <span
+            key={index}
+            className="transition-opacity duration-200"
+          >
+            {word}
+            {index < words.length - 1 ? " " : ""}
+          </span>
+        );
+      })}
+      <span className="inline-block w-0.5 h-[22px] bg-[#555] ml-0.5 align-middle animate-blink" />
+    </p>
+  );
+}
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function HomePage() {
   const supabase = createClient()
 
-const handleGoogleLogin = async () => {
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
-    }
-  })
+  const handleGoogleLogin = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+      }
+    })
 
-  if (error) {
-    console.error('Google OAuth Error:', error)
+    if (error) {
+      console.error('Google OAuth Error:', error)
+    }
   }
-}
 
   return (
     <>
       {/* ── NAV ─────────────────────────────────────────────────────────────── */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-between px-10 py-5 bg-[rgba(15,14,14,0.9)] backdrop-blur-md border-t border-neutral-800 m-4 rounded-full w-[600px] mx-auto">
-       
-      <div className="flex gap-2 items-center"><Image src="/icon1.png" alt="100words logo" width={32} height={32} /> 
-        <span className="text-base font-medium tracking-[-0.01em]">100 words</span>
-      </div>
+      {/* <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-between px-10 py-5 bg-[rgba(15,14,14,0.9)] backdrop-blur-md border-t border-neutral-800 m-4 rounded-full w-[600px] mx-auto">
+
+        <div className="flex gap-2 items-center"><Image src="/icon1.png" alt="100words logo" width={32} height={32} />
+          <span className="text-base font-medium tracking-[-0.01em]">100 words</span>
+        </div>
         <div className="flex items-center gap-10">
-          <a href="#why"     className="hidden sm:block text-[15px] text-[#555] transition-colors hover:text-[#e8e6e3]">Why</a>
+          <a href="#why" className="hidden sm:block text-[15px] text-[#555] transition-colors hover:text-[#e8e6e3]">Why</a>
           <a href="#science" className="hidden sm:block text-[15px] text-[#555] transition-colors hover:text-[#e8e6e3]">Science</a>
           <a href="#pricing" className="hidden sm:block text-[15px] text-[#555] transition-colors hover:text-[#e8e6e3]">Pricing</a>
           <a onClick={handleGoogleLogin}
@@ -210,15 +271,19 @@ const handleGoogleLogin = async () => {
             Start writing →
           </a>
         </div>
-      </nav>
+      </nav> */}
 
-      <main className="pt-[88px]">
+      <main className="pt-[32px]">
 
         {/* ── HERO ────────────────────────────────────────────────────────────── */}
         <section className="min-h-screen flex flex-col items-center justify-center text-center px-8 pb-20">
+        <div className="flex flex-col items-center gap-2">
+        <Image src="/icon1.png" alt="100words logo" width={64} height={64} />
+100words.app
+        </div>
 
-          <p className="animate-fade-up delay-50 text-[13px] text-[#444] tracking-[0.08em] uppercase mb-8 font-normal">
-            The #1 habit for mental health
+          <p className="animate-fade-up italic py-2 px-4 delay-50 tracking-[0.08em] uppercase mb-4 text-neutral-600">
+            "The #1 habit for mental health"
           </p>
 
           <h1 className="animate-fade-up delay-180 text-[clamp(52px,9vw,112px)] font-black tracking-[-0.04em] leading-[1.02] max-w-[1000px] mb-7">
@@ -238,98 +303,99 @@ const handleGoogleLogin = async () => {
           </div>
 
           {/* Mockup */}
-          <div className="animate-fade-up delay-580 mt-20 w-full max-w-[800px]">
-            <div className="bg-[rgb(18,18,18)] rounded-[28px] border border-[rgb(30,30,30)] overflow-hidden shadow-[0_56px_100px_rgba(0,0,0,0.55)]">
-              {/* title bar */}
-              <div className="bg-[rgb(20,20,20)] px-5 py-4 flex items-center gap-1.5 border-b border-[rgb(27,27,27)]">
-                <span className="w-3 h-3 rounded-full bg-[#ff5f57] inline-block" />
-                <span className="w-3 h-3 rounded-full bg-[#febc2e] inline-block" />
-                <span className="w-3 h-3 rounded-full bg-[#28c840] inline-block" />
-              </div>
-              {/* body */}
-              <div className="px-14 py-12">
+          {/* <div className="animate-fade-up delay-580 mt-20 w-full max-w-[800px]">
+            <div className="bg-[rgb(18,18,18)] rounded-[28px] border border-[rgb(30,30,30)] overflow-hidden shadow-[0_56px_100px_rgba(0,0,0,0.55)]"> */}
+          {/* title bar */}
+          {/* <div className="bg-[rgb(20,20,20)] px-5 py-4 flex items-center gap-1.5 border-b border-[rgb(27,27,27)]">
+              </div> */}
+          {/* body */}
+          {/* <div className="px-14 py-12">
                 <p className="text-[12px] text-[#333] mb-5 tracking-[0.08em] uppercase">Wednesday, March 4</p>
-                <p className="text-[19px] text-[rgb(144,138,132)] leading-[1.88] font-light">
-                  Woke up with that familiar weight again, but this time I noticed it instead of just
-                  carrying it. Funny how writing forces you to actually look at things. The meeting went
-                  fine — I was overthinking it, as usual. Took a walk after lunch, the light was different
-                  today. Softer. I want to remember that feeling.
-                  <span className="inline-block w-0.5 h-[22px] bg-[#555] ml-0.5 align-middle animate-blink" />
-                </p>
-                <div className="mt-9 flex items-center justify-between">
+                <ScrollRevealText
+                  className="text-xl leading-[1.88] font-light"
+                  text="tbh today was just a massive grind. spent way too many hours staring at my screen just trying to make things click and getting caught in the usual loop of tweaking pixels. it’s weird how i can spend all day building these perfect, organized systems in a digital world while my real-life desk is just a graveyard of coffee cups. Yeah, i’m so f*** tired of screens. i just want to head out to a local spot, grab a drink, and actually see people in 3D."
+                />
+                <div className="mt-9 flex items-center justify-center">
                   <span className="text-[13px] text-[#333]">
-                    <span className="text-[rgb(150,148,144)]">78</span> / 100 words
+                    <span className="text-[rgb(150,148,144)]">100</span> / 100 words
                   </span>
                 </div>
               </div>
+              
+            </div>
+            
+          </div> */}
+
+
+          {/* <button
+            onClick={handleSubmit}
+            className="flex w-[80px] h-[80px] bg-neutral-300 text-neutral-900 rounded-full items-center justify-center mb-8 text-xl font-bold shadow-lg shadow-neutral-700 hover:scale-95 transition-all z-20"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 20 20"><path fill="currentColor" d="M4.254 19.567c.307-.982.77-2.364 1.391-4.362c2.707-.429 3.827.341 5.546-2.729c-1.395.427-3.077-.792-2.987-1.321c.091-.528 3.913.381 6.416-3.173c-3.155.696-4.164-.836-3.757-1.067c.939-.534 3.726-.222 5.212-1.669c.766-.745 1.125-2.556.813-3.202c-.374-.781-2.656-1.946-3.914-1.836c-1.258.109-3.231 4.79-3.817 4.754c-.584-.037-.703-2.098.319-4.013c-1.077.477-3.051 1.959-3.67 3.226c-1.153 2.357.108 7.766-.296 7.958c-.405.193-1.766-2.481-2.172-3.694c-.555 1.859-.568 3.721 1.053 6.194c-.611 1.623-.945 3.491-.996 4.441c-.024.759.724.922.859.493z" /></svg>
+            
+        </button> */}
+
+        </section>
+
+        {/* ── WHY ─────────────────────────────────────────────────────────────── */}
+        {/* <div className={divider} /> */}
+        <section id="why" className={`${section} flex flex-col items-center`}>
+          <p className=' px-4 py-2 mb-8 tracking-[0.08em] uppercase mb-8 text-neutral-600'>This is really important</p>
+          <h2 className={`${sectionH2} max-w-[600px]`}>Why journal in 2026?</h2>
+          <ScrollRevealText
+                  className="max-w-[560px] text-2xl leading-[1.6] text-neutral-500 text-center"
+                  text="Journaling isn't about writing Dear Diary and crying over a crush — it’s the original brain hack. Right now, we’re living in a permanent state of brain fog because we’ve outsourced our thinking to algorithms that don't actually care about us. When you journal, you’re reclaiming your headspace. It’s the only place left where the content is 100% yours—no filters, no likes, and no AI hallucinating your life for you. It’s a tradition that goes back centuries because it works."
+                />
+        </section>
+
+           {/* ── HOW IT WORKS ─────────────────────────────────────────────────────────────── */}
+        {/* <div className={divider} /> */}
+        <section id="why" className={`${section} flex flex-col items-center`}>
+          <p className=' px-4 py-2 mb-8 tracking-[0.08em] uppercase mb-8 text-neutral-600'>Principles</p>
+          <h2 className={`${sectionH2} max-w-[600px] text-center`}>This isn't an average diary. It's got character.</h2>
+          <div className="grid grid-cols-3 gap-5 max-sm:grid-cols-1">
+            <div className="component-bg p-12">
+              <div className="w-12 h-12 text-2xl font-bold text-white rounded-2xl bg-[rgb(38,38,38)] flex items-center justify-center mb-6 shrink-0">1</div>
+            <p className="text-[18px] font-medium mb-1.5">One Note Per Day</p>
+                <p className="text-md text-neutral-600 mb-7">Your life isn’t a Twitter feed. By forcing a single daily entry, we stop the "micro-posting" habit. It forces you to actually synthesize your day into one meaningful snapshot rather than a series of disconnected, impulsive thoughts.</p>
+            </div>
+            <div className="component-bg p-12">
+            <div className="w-12 h-12 text-2xl font-bold text-white rounded-2xl bg-[rgb(38,38,38)] flex items-center justify-center mb-6 shrink-0">2</div>
+            <p className="text-[18px] font-medium mb-1.5">No Edits*</p>
+                <p className="text-md text-neutral-600 mb-7">Real life doesn't have an "undo" button. When you can’t polish or delete your past, you’re forced to accept your own growth—messy drafts and all. It’s an authentic 3D receipt of who you were at that exact moment. <span className="text-neutral-400 flex mt-2 italic">* You can edit note before end of the day</span></p>
+            </div>
+            <div className="component-bg p-12">
+            <div className="w-12 h-12 text-2xl font-bold text-white rounded-2xl bg-[rgb(38,38,38)] flex items-center justify-center mb-6 shrink-0">3</div>
+            <p className="text-[18px] font-medium mb-1.5">The 100-Word Minimum</p>
+                <p className="text-md text-neutral-600 mb-7">Anything less is just a status update. Reaching 100 words forces your brain to move past surface-level "I'm tired" venting and actually start digging into why. It’s the threshold where "complaining" turns into actual self-reflection.</p>
             </div>
           </div>
         </section>
 
-        {/* ── WHY ─────────────────────────────────────────────────────────────── */}
-        <div className={divider} />
-        <section id="why" className={section}>
-          <p className={label}>Why journal?</p>
-          <h2 className={`${sectionH2} max-w-[600px]`}>Your mind needs<br />a private space.</h2>
-          <div className="grid grid-cols-2 gap-[3px] max-sm:grid-cols-1">
-            {whyItems.map(({ Icon, title, desc }, i) => (
-              <div key={title} className={`bg-[rgb(28,28,28)] border border-[rgb(34,34,34)] p-12 ${
-                i === 0 ? "rounded-tl-[32px]" :
-                i === 1 ? "rounded-tr-[32px]" :
-                i === 2 ? "rounded-bl-[32px]" :
-                          "rounded-br-[32px]"
-              } max-sm:rounded-none first:max-sm:rounded-t-[32px] last:max-sm:rounded-b-[32px]`}>
-                <div className={iconWrap}><Icon /></div>
-                <h3 className="text-xl font-medium mb-3.5 tracking-[-0.015em]">{title}</h3>
-                <p className="text-base text-[#666] font-light leading-[1.72]">{desc}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
         {/* ── QUOTES ──────────────────────────────────────────────────────────── */}
-        <div className={divider} />
-        <section className={section}>
-          <p className={label}>Prominent voices</p>
+        {/* <div className={divider} /> */}
+        <section className={`${section} flex flex-col items-center text-center`}>
+          <p className="mb-8 tracking-[0.08em] uppercase mb-8 text-neutral-600">Prominent voices</p>
           <h2 className={sectionH2}>They understood<br />the power of writing.</h2>
           <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1">
             {quotes.map((q) => (
-              <div key={q.name} className={`${card} p-12`}>
+              <div key={q.name} className="component-bg p-12">
                 <p className="text-[18px] font-medium mb-1.5">{q.name}</p>
-                <p className="text-[13px] text-[#444] mb-7 tracking-[0.02em]">{q.label}</p>
-                <p className="text-[18px] text-[rgb(118,112,106)] italic font-light leading-[1.82]">"{q.text}"</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ── SCIENCE ─────────────────────────────────────────────────────────── */}
-        <div className={divider} />
-        <section id="science" className={section}>
-          <p className={label}>Scientifically proven</p>
-          <h2 className={`${sectionH2} mb-5`}>The research is clear.</h2>
-          <p className="text-[#555] font-light max-w-[520px] mb-16 text-lg leading-[1.72]">
-            Three independent meta-analyses confirm what every seasoned journaler already knows — writing works.
-          </p>
-          <div className="flex flex-col gap-4">
-            {science.map((s) => (
-              <div key={s.label} className={`${card} px-12 py-11`}>
-                <p className="text-[13px] text-[#555] tracking-[0.06em] uppercase mb-4">{s.label}</p>
-                <p className="text-lg text-[rgb(138,132,126)] leading-[1.8] font-light mb-5 max-w-[760px]">{s.text}</p>
-                <p className="text-xs text-[rgb(46,46,46)] break-all">{s.url}</p>
+                <p className="text-[13px] text-neutral-600 mb-7 tracking-[0.02em]">{q.label}</p>
+                <p className="text-[18px] text-neutral-300 italic font-light leading-[1.82]">"{q.text}"</p>
               </div>
             ))}
           </div>
         </section>
 
         {/* ── FOR WHOM ────────────────────────────────────────────────────────── */}
-        <div className={divider} />
-        <section className={section}>
+        {/* <div className={divider} /> */}
+        <section className={`${section} flex flex-col items-center text-center`}>
           <p className={label}>Who it's for</p>
           <h2 className={sectionH2}>If you have thoughts,<br />this is for you.</h2>
           <div className="grid grid-cols-4 gap-4 max-lg:grid-cols-2 max-sm:grid-cols-1">
             {forWhom.map(({ Icon, title, desc }) => (
-              <div key={title} className={`${card} p-10`}>
+              <div key={title} className="component-bg p-12 text-left">
                 <div className={iconWrap}><Icon /></div>
                 <p className="text-[18px] font-medium mb-3">{title}</p>
                 <p className="text-[15px] text-[#555] font-light leading-[1.68]">{desc}</p>
@@ -339,13 +405,13 @@ const handleGoogleLogin = async () => {
         </section>
 
         {/* ── FEATURES ────────────────────────────────────────────────────────── */}
-        <div className={divider} />
-        <section className={section}>
+        {/* <div className={divider} /> */}
+        <section className={`${section} flex flex-col items-center text-center`}>
           <p className={label}>Features</p>
           <h2 className={sectionH2}>Everything you need.<br />Nothing you don't.</h2>
           <div className="grid grid-cols-3 gap-4 max-lg:grid-cols-2 max-sm:grid-cols-1">
             {features.map(({ Icon, title, desc }) => (
-              <div key={title} className={`${card} p-10`}>
+              <div key={title} className="component-bg p-12 text-left">
                 <div className={iconWrap}><Icon /></div>
                 <h3 className="text-[18px] font-medium mb-3">{title}</h3>
                 <p className="text-[15px] text-[#666] font-light leading-[1.68]">{desc}</p>
@@ -355,8 +421,8 @@ const handleGoogleLogin = async () => {
         </section>
 
         {/* ── PRICING ─────────────────────────────────────────────────────────── */}
-        <div className={divider} />
-        <section id="pricing" className={section}>
+        {/* <div className={divider} /> */}
+        <section className={`${section} flex flex-col items-center text-center`}>
           <p className={label}>Pricing</p>
           <h2 className={`${sectionH2} mb-5`}>Simple. Fair. Honest.</h2>
           <p className="text-[#555] font-light max-w-[440px] mb-16 text-lg leading-[1.72]">
@@ -364,11 +430,12 @@ const handleGoogleLogin = async () => {
           </p>
           <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1">
             {/* Free */}
-            <div className={`${card} p-12 flex flex-col gap-9`}>
+            <div className="component-bg py-12 px-32 flex flex-col gap-9">
               <div>
                 <p className="text-[13px] text-[#555] tracking-[0.08em] uppercase mb-4">Basic</p>
                 <p className="text-[60px] font-light tracking-[-0.04em] leading-none">
-                  $0<span className="text-xl text-[#555] font-light"> / mo</span>
+                <sup className="text-[26px] align-super font-light">$</sup>
+                0<span className="text-xl text-[#555] font-light"> / mo</span>
                 </p>
               </div>
               <ul className="flex flex-col gap-4 list-none">
@@ -385,11 +452,11 @@ const handleGoogleLogin = async () => {
               </a>
             </div>
             {/* Pro */}
-            <div className={`${card} p-12 flex flex-col gap-9 !border-[rgb(52,52,52)] !border-t-[rgb(62,62,62)]`}>
+            <div className="component-bg p-12 flex flex-col gap-9 border border-white">
               <div>
                 <p className="text-[13px] text-[#555] tracking-[0.08em] uppercase mb-4">Pro</p>
                 <p className="text-[60px] font-light tracking-[-0.04em] leading-none">
-                  <sup className="text-[26px] align-super font-light">$</sup>2
+                  <sup className="text-[26px] align-super font-light">$</sup>4.77
                   <span className="text-xl text-[#555] font-light"> / mo</span>
                 </p>
               </div>
@@ -410,30 +477,32 @@ const handleGoogleLogin = async () => {
         </section>
 
         {/* ── FAQ ─────────────────────────────────────────────────────────────── */}
-        <div className={divider} />
-        <section className={section}>
+        {/* <div className={divider} /> */}
+        <section className={`${section} flex flex-col items-center text-center`}>
           <p className={label}>Questions</p>
           <h2 className={sectionH2}>Answers.</h2>
-          <div className="max-w-[840px]">
+          <div className="w-[640px]">
             {faq.map((item) => (
-              <div key={item.q} className="border-b border-[rgb(26,26,26)] py-9 first:border-t first:border-t-[rgb(26,26,26)]">
-                <p className="text-xl font-normal text-[#e8e6e3] mb-3.5 tracking-[-0.015em]">{item.q}</p>
+              <div key={item.q} className="component-bg mb-6 px-12 py-6 cursor-pointer">
+                <details open>
+                <summary className="text-xl font-normal text-[#e8e6e3] mb-3.5 tracking-[-0.015em]">{item.q}</summary>
                 <p className="text-[17px] text-[#666] font-light leading-[1.78]">{item.a}</p>
+                </details>
               </div>
             ))}
           </div>
         </section>
 
         {/* ── CTA ─────────────────────────────────────────────────────────────── */}
-        <div className={divider} />
-        <section className="px-10 pt-32 pb-44 text-center">
-          <div className={`${card} max-w-[680px] mx-auto px-18 py-22 p-6`}>
+        {/* <div className={divider} /> */}
+        <section className="px-10 pt-24  pb-44 text-center">
+          <div className=" max-w-[680px] mx-auto px-18 py-22 p-6">
             <p className="text-[13px] text-[#555] tracking-[0.08em] uppercase mb-6">Ready?</p>
-            <h2 className="text-[clamp(36px,5vw,64px)] font-black tracking-[-0.035em] leading-[1.06] mb-6">
+            <h2 className="text-[clamp(52px,5vw,64px)] font-black tracking-[-0.035em] leading-[1.06] mb-6">
               Transform your<br />mental OS.
             </h2>
             <p className="text-[#666] font-light max-w-[360px] mx-auto mb-11 leading-[1.78] text-[19px]">
-              Start with 100 words today. The hardest part is opening the page — we made that easy.
+            Start with 100 words today and just see where it takes you.
             </p>
             <a onClick={handleGoogleLogin}
               className={`${btnP} text-lg px-10 py-5`}>
@@ -449,8 +518,8 @@ const handleGoogleLogin = async () => {
       <footer className="border-t border-[rgb(22,22,22)] px-10 py-10 max-w-[1200px] mx-auto flex items-center justify-between flex-wrap gap-4">
         <span className="text-[15px] text-[#444]">100words — journal for mental health</span>
         <div className="flex gap-7">
-          <a href="#" className="text-[14px] text-[#555] transition-colors hover:text-[#e8e6e3]">Privacy</a>
-          <a href="#" className="text-[14px] text-[#555] transition-colors hover:text-[#e8e6e3]">Terms</a>
+          <a href="/privacy" className="text-[14px] text-[#555] transition-colors hover:text-[#e8e6e3]">Privacy</a>
+          <a href="/tos" className="text-[14px] text-[#555] transition-colors hover:text-[#e8e6e3]">Terms</a>
           <a href="https://100words.app/" target="_blank" rel="noopener noreferrer" className="text-[14px] text-[#555] transition-colors hover:text-[#e8e6e3]">
             100words.app
           </a>

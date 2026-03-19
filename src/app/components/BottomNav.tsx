@@ -11,47 +11,100 @@ export function BottomNav() {
 
 
   return (
-    <div className="max-w-full flex items-center justify-center">
-      <div className="w-96 flex items-center justify-center gap-8 p-4 h-[60px] rounded-full bottom-4 border-t-[1.5px] border-neutral-700 fixed bg-neutral-700/30 backdrop-blur-lg  text-white/35 z-30" >
+    <>
+      {/* Mobile: bottom bar */}
+      <div className="md:hidden max-w-full flex items-center justify-center">
+        <div className="w-full flex items-center justify-center gap-8 p-4 h-[60px] bottom-0 bg-[#121212] fixed border-t border-neutral-800 text-white/35 z-30">
+          <div className="flex gap-14">
+            <button onClick={() => { router.push('/') }} aria-label="Home">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 20 20" className={isActive('/') ? 'text-white' : 'text-white/35 hover:text-white'}><path fill="currentColor" d="M18.672 11H17v6c0 .445-.194 1-1 1h-4v-6H8v6H4c-.806 0-1-.555-1-1v-6H1.328c-.598 0-.47-.324-.06-.748L9.292 2.22c.195-.202.451-.302.708-.312c.257.01.513.109.708.312l8.023 8.031c.411.425.539.749-.059.749z" /></svg>
+            </button>
 
-        <div className="flex gap-14">
+            <button onClick={() => { router.push('/entries') }} aria-label="Entries">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 20 20" className={isActive('/entries') ? 'text-white' : 'text-white/35 hover:text-white'}><path fill="currentColor" d="M13.981 2H6.018s-.996 0-.996 1h9.955c0-1-.996-1-.996-1zm2.987 3c0-1-.995-1-.995-1H4.027s-.995 0-.995 1v1h13.936V5zm1.99 1l-.588-.592V7H1.63V5.408L1.041 6C.452 6.592.03 6.75.267 8c.236 1.246 1.379 8.076 1.549 9c.186 1.014 1.217 1 1.217 1h13.936s1.03.014 1.217-1c.17-.924 1.312-7.754 1.549-9c.235-1.25-.187-1.408-.777-2zM14 11.997c0 .554-.449 1.003-1.003 1.003H7.003A1.003 1.003 0 0 1 6 11.997V10h1v2h6v-2h1v1.997z" /></svg>
+            </button>
+          </div>
 
-          <button onClick={() => { router.push('/') }}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 20 20" className={isActive('/') ? 'text-white' : 'text-white/35 hover:text-white'}><path fill="currentColor" d="M18.672 11H17v6c0 .445-.194 1-1 1h-4v-6H8v6H4c-.806 0-1-.555-1-1v-6H1.328c-.598 0-.47-.324-.06-.748L9.292 2.22c.195-.202.451-.302.708-.312c.257.01.513.109.708.312l8.023 8.031c.411.425.539.749-.059.749z" /></svg>
-          </button>
+          <div>
+            <button
+              onClick={() => setNewEntryOpen(true)}
+              aria-label="New entry"
+              className="flex w-[65px] h-[65px] rounded-full bg-stone-300 shadow-lg shadow-neutral-900 items-center justify-center mb-8 text-xl font-bold text-white/70 hover:scale-90 hover:shadow-none transition-all"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20 20" ><path fill="dark-grey" d="M4.254 19.567c.307-.982.77-2.364 1.391-4.362c2.707-.429 3.827.341 5.546-2.729c-1.395.427-3.077-.792-2.987-1.321c.091-.528 3.913.381 6.416-3.173c-3.155.696-4.164-.836-3.757-1.067c.939-.534 3.726-.222 5.212-1.669c.766-.745 1.125-2.556.813-3.202c-.374-.781-2.656-1.946-3.914-1.836c-1.258.109-3.231 4.79-3.817 4.754c-.584-.037-.703-2.098.319-4.013c-1.077.477-3.051 1.959-3.67 3.226c-1.153 2.357.108 7.766-.296 7.958c-.405.193-1.766-2.481-2.172-3.694c-.555 1.859-.568 3.721 1.053 6.194c-.611 1.623-.945 3.491-.996 4.441c-.024.759.724.922.859.493z" /></svg>
+            </button>
+          </div>
 
+          <div className="flex gap-14">
+            <button onClick={() => { router.push('/stats') }} aria-label="Stats">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 20 20" className={isActive('/stats') ? 'text-white' : 'text-white/35 hover:text-white'}><path fill="currentColor" d="M20 2v16H.32c-.318 0-.416-.209-.216-.465l4.469-5.748a.526.526 0 0 1 .789-.062l1.419 1.334a.473.473 0 0 0 .747-.096l3.047-4.74a.466.466 0 0 1 .741-.09l2.171 2.096c.232.225.559.18.724-.1l5.133-7.785C19.51 2.062 19.75 2 20 2z" /></svg>
+            </button>
 
-          <button onClick={() => { router.push('/entries') }}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 20 20" className={isActive('/entries') ? 'text-white' : 'text-white/35 hover:text-white'}><path fill="currentColor" d="M13.981 2H6.018s-.996 0-.996 1h9.955c0-1-.996-1-.996-1zm2.987 3c0-1-.995-1-.995-1H4.027s-.995 0-.995 1v1h13.936V5zm1.99 1l-.588-.592V7H1.63V5.408L1.041 6C.452 6.592.03 6.75.267 8c.236 1.246 1.379 8.076 1.549 9c.186 1.014 1.217 1 1.217 1h13.936s1.03.014 1.217-1c.17-.924 1.312-7.754 1.549-9c.235-1.25-.187-1.408-.777-2zM14 11.997c0 .554-.449 1.003-1.003 1.003H7.003A1.003 1.003 0 0 1 6 11.997V10h1v2h6v-2h1v1.997z" /></svg>
-          </button>
-
+            <button onClick={() => { router.push('/settings') }} aria-label="Settings">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 20 20" className={isActive('/settings') ? 'text-white' : 'text-white/35 hover:text-white'}><path fill="currentColor" d="M16.783 10c0-1.049.646-1.875 1.617-2.443a8.932 8.932 0 0 0-.692-1.672c-1.089.285-1.97-.141-2.711-.883c-.741-.74-.968-1.621-.683-2.711a8.732 8.732 0 0 0-1.672-.691c-.568.97-1.595 1.615-2.642 1.615c-1.048 0-2.074-.645-2.643-1.615a8.697 8.697 0 0 0-1.671.691c.285 1.09.059 1.971-.684 2.711c-.74.742-1.621 1.168-2.711.883A8.797 8.797 0 0 0 1.6 7.557c.97.568 1.615 1.394 1.615 2.443c0 1.047-.645 2.074-1.615 2.643a8.89 8.89 0 0 0 .691 1.672c1.09-.285 1.971-.059 2.711.682c.741.742.969 1.623.684 2.711a8.841 8.841 0 0 0 1.672.693c.568-.973 1.595-1.617 2.643-1.617c1.047 0 2.074.645 2.643 1.617a8.963 8.963 0 0 0 1.672-.693c-.285-1.088-.059-1.969.683-2.711c.741-.74 1.622-1.166 2.711-.883a8.811 8.811 0 0 0 .692-1.672c-.973-.569-1.619-1.395-1.619-2.442zM10 13.652a3.652 3.652 0 1 1 0-7.306a3.653 3.653 0 0 1 0 7.306z" /></svg>
+            </button>
+          </div>
         </div>
-
-        <div >
-          {/* <RedButton /> */}
-          <button onClick={() => setNewEntryOpen(true)} className="flex w-[65px] h-[65px] rounded-full bg-stone-300 shadow-lg shadow-neutral-900 items-center justify-center mb-8 text-xl font-bold text-white/70 hover:scale-90 hover:shadow-none transition-all">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20 20" ><path fill="dark-grey" d="M4.254 19.567c.307-.982.77-2.364 1.391-4.362c2.707-.429 3.827.341 5.546-2.729c-1.395.427-3.077-.792-2.987-1.321c.091-.528 3.913.381 6.416-3.173c-3.155.696-4.164-.836-3.757-1.067c.939-.534 3.726-.222 5.212-1.669c.766-.745 1.125-2.556.813-3.202c-.374-.781-2.656-1.946-3.914-1.836c-1.258.109-3.231 4.79-3.817 4.754c-.584-.037-.703-2.098.319-4.013c-1.077.477-3.051 1.959-3.67 3.226c-1.153 2.357.108 7.766-.296 7.958c-.405.193-1.766-2.481-2.172-3.694c-.555 1.859-.568 3.721 1.053 6.194c-.611 1.623-.945 3.491-.996 4.441c-.024.759.724.922.859.493z" /></svg>
-          </button>
-        </div>
-
-
-
-        <div className="flex gap-14">
-
-          <button onClick={() => { router.push('/stats') }}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 20 20" className={isActive('/stats') ? 'text-white' : 'text-white/35 hover:text-white'}><path fill="currentColor" d="M20 2v16H.32c-.318 0-.416-.209-.216-.465l4.469-5.748a.526.526 0 0 1 .789-.062l1.419 1.334a.473.473 0 0 0 .747-.096l3.047-4.74a.466.466 0 0 1 .741-.09l2.171 2.096c.232.225.559.18.724-.1l5.133-7.785C19.51 2.062 19.75 2 20 2z" /></svg>
-          </button>
-
-          <button onClick={() => { router.push('/settings') }}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 20 20" className={isActive('/settings') ? 'text-white' : 'text-white/35 hover:text-white'}><path fill="currentColor" d="M16.783 10c0-1.049.646-1.875 1.617-2.443a8.932 8.932 0 0 0-.692-1.672c-1.089.285-1.97-.141-2.711-.883c-.741-.74-.968-1.621-.683-2.711a8.732 8.732 0 0 0-1.672-.691c-.568.97-1.595 1.615-2.642 1.615c-1.048 0-2.074-.645-2.643-1.615a8.697 8.697 0 0 0-1.671.691c.285 1.09.059 1.971-.684 2.711c-.74.742-1.621 1.168-2.711.883A8.797 8.797 0 0 0 1.6 7.557c.97.568 1.615 1.394 1.615 2.443c0 1.047-.645 2.074-1.615 2.643a8.89 8.89 0 0 0 .691 1.672c1.09-.285 1.971-.059 2.711.682c.741.742.969 1.623.684 2.711a8.841 8.841 0 0 0 1.672.693c.568-.973 1.595-1.617 2.643-1.617c1.047 0 2.074.645 2.643 1.617a8.963 8.963 0 0 0 1.672-.693c-.285-1.088-.059-1.969.683-2.711c.741-.74 1.622-1.166 2.711-.883a8.811 8.811 0 0 0 .692-1.672c-.973-.569-1.619-1.395-1.619-2.442zM10 13.652a3.652 3.652 0 1 1 0-7.306a3.653 3.653 0 0 1 0 7.306z" /></svg>
-          </button>
-
-        </div>
-
-
-
       </div>
 
-    </div>
+      {/* Desktop: left sidebar */}
+      <aside className="hidden md:flex fixed left-0 top-0 h-screen w-64 bg-[#121212] border-r border-neutral-800 text-white/70 z-30">
+        <div className="w-full flex flex-col p-4 gap-2">
+ 
+
+          <nav className="mt-2 flex flex-col gap-1">
+            <button
+              onClick={() => { router.push('/') }}
+              className={`w-full flex items-center gap-3 rounded-full px-3 py-2 transition-colors ${isActive('/') ? 'bg-neutral-800 text-white' : 'text-white/60 hover:text-white hover:bg-neutral-900'}`}
+            >
+              <span className="shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 20 20"><path fill="currentColor" d="M18.672 11H17v6c0 .445-.194 1-1 1h-4v-6H8v6H4c-.806 0-1-.555-1-1v-6H1.328c-.598 0-.47-.324-.06-.748L9.292 2.22c.195-.202.451-.302.708-.312c.257.01.513.109.708.312l8.023 8.031c.411.425.539.749-.059.749z" /></svg>
+              </span>
+              <span className="text-sm font-medium">Home</span>
+            </button>
+
+            <button
+              onClick={() => { router.push('/entries') }}
+              className={`w-full flex items-center gap-3 rounded-full px-3 py-2 transition-colors ${isActive('/entries') ? 'bg-neutral-800 text-white' : 'text-white/60 hover:text-white hover:bg-neutral-900'}`}
+            >
+              <span className="shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 20 20"><path fill="currentColor" d="M13.981 2H6.018s-.996 0-.996 1h9.955c0-1-.996-1-.996-1zm2.987 3c0-1-.995-1-.995-1H4.027s-.995 0-.995 1v1h13.936V5zm1.99 1l-.588-.592V7H1.63V5.408L1.041 6C.452 6.592.03 6.75.267 8c.236 1.246 1.379 8.076 1.549 9c.186 1.014 1.217 1 1.217 1h13.936s1.03.014 1.217-1c.17-.924 1.312-7.754 1.549-9c.235-1.25-.187-1.408-.777-2zM14 11.997c0 .554-.449 1.003-1.003 1.003H7.003A1.003 1.003 0 0 1 6 11.997V10h1v2h6v-2h1v1.997z" /></svg>
+              </span>
+              <span className="text-sm font-medium">Entries</span>
+            </button>
+
+            <button
+              onClick={() => { router.push('/stats') }}
+              className={`w-full flex items-center gap-3 rounded-full px-3 py-2 transition-colors ${isActive('/stats') ? 'bg-neutral-800 text-white' : 'text-white/60 hover:text-white hover:bg-neutral-900'}`}
+            >
+              <span className="shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 20 20"><path fill="currentColor" d="M20 2v16H.32c-.318 0-.416-.209-.216-.465l4.469-5.748a.526.526 0 0 1 .789-.062l1.419 1.334a.473.473 0 0 0 .747-.096l3.047-4.74a.466.466 0 0 1 .741-.09l2.171 2.096c.232.225.559.18.724-.1l5.133-7.785C19.51 2.062 19.75 2 20 2z" /></svg>
+              </span>
+              <span className="text-sm font-medium">Stats</span>
+            </button>
+
+            <button
+              onClick={() => { router.push('/settings') }}
+              className={`w-full flex items-center gap-3 rounded-full px-3 py-2 transition-colors ${isActive('/settings') ? 'bg-neutral-800 text-white' : 'text-white/60 hover:text-white hover:bg-neutral-900'}`}
+            >
+              <span className="shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 20 20"><path fill="currentColor" d="M16.783 10c0-1.049.646-1.875 1.617-2.443a8.932 8.932 0 0 0-.692-1.672c-1.089.285-1.97-.141-2.711-.883c-.741-.74-.968-1.621-.683-2.711a8.732 8.732 0 0 0-1.672-.691c-.568.97-1.595 1.615-2.642 1.615c-1.048 0-2.074-.645-2.643-1.615a8.697 8.697 0 0 0-1.671.691c.285 1.09.059 1.971-.684 2.711c-.74.742-1.621 1.168-2.711.883A8.797 8.797 0 0 0 1.6 7.557c.97.568 1.615 1.394 1.615 2.443c0 1.047-.645 2.074-1.615 2.643a8.89 8.89 0 0 0 .691 1.672c1.09-.285 1.971-.059 2.711.682c.741.742.969 1.623.684 2.711a8.841 8.841 0 0 0 1.672.693c.568-.973 1.595-1.617 2.643-1.617c1.047 0 2.074.645 2.643 1.617a8.963 8.963 0 0 0 1.672-.693c-.285-1.088-.059-1.969.683-2.711c.741-.74 1.622-1.166 2.711-.883a8.811 8.811 0 0 0 .692-1.672c-.973-.569-1.619-1.395-1.619-2.442zM10 13.652a3.652 3.652 0 1 1 0-7.306a3.653 3.653 0 0 1 0 7.306z" /></svg>
+              </span>
+              <span className="text-sm font-medium">Settings</span>
+            </button>
+          </nav>
+
+          <button
+            onClick={() => setNewEntryOpen(true)}
+            className="mt-auto w-full flex items-center gap-3 rounded-full px-6 py-3 bg-neutral-200 text-neutral-900 hover:bg-neutral-100 transition-colors"
+          >
+            <span className="shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 20 20"><path fill="currentColor" d="M4.254 19.567c.307-.982.77-2.364 1.391-4.362c2.707-.429 3.827.341 5.546-2.729c-1.395.427-3.077-.792-2.987-1.321c.091-.528 3.913.381 6.416-3.173c-3.155.696-4.164-.836-3.757-1.067c.939-.534 3.726-.222 5.212-1.669c.766-.745 1.125-2.556.813-3.202c-.374-.781-2.656-1.946-3.914-1.836c-1.258.109-3.231 4.79-3.817 4.754c-.584-.037-.703-2.098.319-4.013c-1.077.477-3.051 1.959-3.67 3.226c-1.153 2.357.108 7.766-.296 7.958c-.405.193-1.766-2.481-2.172-3.694c-.555 1.859-.568 3.721 1.053 6.194c-.611 1.623-.945 3.491-.996 4.441c-.024.759.724.922.859.493z" /></svg>
+            </span>
+            <span className="font-semibold">New entry</span>
+          </button>
+        </div>
+      </aside>
+    </>
   )
 }

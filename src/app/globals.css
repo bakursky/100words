@@ -46,14 +46,29 @@ body {
   background-color: var(--background);
   /* background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(55, 55, 55, 0.15), transparent 70%), #0f0e0e; */
   
-  background-image:
+  /* background-image:
     radial-gradient(circle at 50% 100%, rgba(4, 4, 4, 0.6) 0%, transparent 60%),
     radial-gradient(circle at 50% 100%, rgba(19, 19, 19, 0.4) 0%, transparent 70%),
     radial-gradient(circle at 50% 100%, rgba(66, 66, 66, 0.3) 0%, transparent 80%);
-    background-attachment: fixed;
+    background-attachment: fixed; */
 
 
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Hide scrollbar for Chrome, Safari, Edge */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for IE/Edge (old) */
+.scrollbar-hide {
+  -ms-overflow-style: none;
 }
 
 /* body::before {
@@ -106,17 +121,19 @@ body {
 }
 
 .component-bg {
+  /* background: rgb(28, 28, 28); */
+  /* border-radius: 40px; */
+  /* border-top: 1.5px solid rgb(40, 40, 40); */
 
   /* background: rgb(26, 26, 26); */
   /* background: rgb(33, 31, 31); */
-  background: rgb(28, 28, 28);
   /* background: rgba(46, 46, 46, 0.5); */
   /* background-color: var(--background); */
-  border-radius: 40px;
   /* border: 1px solid rgb(37, 37, 37); */
   /* border: 1px solid rgb(42, 42, 42); */
-
-  border-top: 1.5px solid rgb(40, 40, 40);
+  /* border: 1px solid rgb(26, 26, 26); */
+  border-radius: 40px;
+  background-color: #121212;
 
   /* border-bottom: 1.5px solid rgb(40, 40, 40); */
   /* border-left: 1.5px solid rgb(40, 40, 40); */

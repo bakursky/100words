@@ -7,6 +7,7 @@ import { DownloadNotesButton } from "@/app/components/DownloadNotesButton";
 import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
 import { usePaywallStore } from "@/app/store/paywallStore";
+import { DeleteAccount } from "@/app/components/DeleteAccount";
 
 export default function Settings() {
     const { data: user, isLoading } = useUserData();
@@ -47,10 +48,10 @@ export default function Settings() {
 
 
     return (
-        <div className='max-w-md mx-auto px-6 mt-6 mb-20'>
+        <div className='w-96 mx-auto mt-6 mb-20'>
             {/* <div className='text-neutral-500 font-black text-3xl'>Settings</div> */}
             {/* <div className='text-lg text-neutral-300 font-black'>Profile</div> */}
-            <div className="flex flex-col items-center py-4 w-full component-bg">
+            <div className="flex flex-col items-center py-4 px-6 w-full component-bg">
                 <Image
                     src={user?.avatar_url || "/logo.svg"}
                     width={100}
@@ -61,32 +62,46 @@ export default function Settings() {
 
                 <div className="flex flex-col mt-2 text-center">
                     <p className="font-bold text-white">{user?.name}</p>
-                    <p>{user?.email}</p>
+                    <p className="text-neutral-600">{user?.email}</p>
                 </div>
 
-            <button className="m-2 rounded-[40px] bg-white p-3 text-black hover:scale-95 transition-all" onClick={paywallToggle}>PRO features:{paywallValue === 1 ? "On" : "Off"}</button>
+                <LogoutButton />
             </div>
-            <LogoutButton />
+
+            <button className="w-full p-[0.7px] mt-4 rounded-[40px] bg-gradient-to-tr from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% text-white hover:scale-95 transition-all" onClick={paywallToggle}>
+                <div className="component-bg p-4">
+                    <span className="italic">PRO</span> features:&nbsp;{paywallValue === 1 ? "On" : "Off"}
+                    <div className="text-xs text-neutral-500 mt-2 px-6 text-center">All PRO features (AI daily and weekly review) are free to use until the app in the beta testing</div>
+                </div>
+            </button>
 
 
             {/* <div className='text-lg text-neutral-300 font-black mt-4'>Editor and streaks</div> */}
             {/* <div className="component-bg mt-4 p-4"> */}
 
-                <DownloadNotesButton />
+            <DownloadNotesButton />
 
-                <button onClick={() => setSpellCheck(!spellCheck)} className="component-bg mt-4 w-full rounded-2xl p-4 text-white">Spell check: {spellCheck ? "On" : "Off"}
-                </button>
-                <div className="text-xs text-neutral-500 mt-2 text-center">If the spell checker isn&apos;t working, make sure it&apos;s enabled in your browser or disable interfering extensions</div>
+            <button onClick={() => setSpellCheck(!spellCheck)} className="component-bg mt-4 w-full rounded-2xl p-4 text-white">Spell check: {spellCheck ? "On" : "Off"}
+                <div className="text-xs text-neutral-500 mt-2 px-6 text-center">If the spell checker isn&apos;t working, make sure it&apos;s enabled in your browser or disable interfering extensions</div>
+            </button>
 
-                <div className="component-bg mt-4 w-full rounded-2xl p-4 text-center text-white">
-                    <span>First day of the week: </span>
-                    <select onChange={handleChange} value={selectedValue} className="bg-[#202020] rounded-full">
-                        <option value="6">Saturday</option>
-                        <option value="0">Sunday</option>
-                        <option value="1">Monday</option>
-                    </select>
-                </div>
+            <div className="component-bg mt-4 w-full rounded-2xl p-4 text-center text-white">
+                <span>First day of the week: </span>
+                <select onChange={handleChange} value={selectedValue} className="bg-[#202020] rounded-full">
+                    <option value="6">Saturday</option>
+                    <option value="0">Sunday</option>
+                    <option value="1">Monday</option>
+                </select>
+            </div>
 
+           
+
+            <button className="component-bg mt-4 w-full rounded-2xl p-4 text-white">Send feedback
+            </button>
+
+            <DeleteAccount />
+
+            <div className="mt-4 mb-24 text-center font-semibold text-neutral-800">Version 0.1.0 Alpha</div>
 
             {/* </div> */}
 

@@ -6,7 +6,9 @@ export default function AppLayout({
 }) {
   return (
     <>
-      {children}
+      <div className="pb-[60px] md:pb-0 md:pl-64">
+        {children}
+      </div>
       <BottomNav />
     </>
   );

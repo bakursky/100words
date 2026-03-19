@@ -18,6 +18,8 @@ export default function Entries() {
     // const [modalOpen, setModalOpen] = useState(false)
     const { modalOpen, setModalOpen } = useModalStore()
     const [itemDate, setItemDate] = useState('')
+    const PAGE_SIZE = 10;
+    const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
     useEffect(() => { if (!isLoading && !user) { redirect('/welcome') } }, [user, isLoading])
 
@@ -28,6 +30,29 @@ export default function Entries() {
 
         })
 
+    useEffect(() => {
+        function handleScroll() {
+            const scrollPosition = window.innerHeight + window.scrollY;
+            const threshold = document.body.offsetHeight - 200; // 200px from bottom
+
+            if (scrollPosition >= threshold) {
+                setVisibleCount((current) => {
+                    // Don’t exceed total filtered notes length
+                    if (!filterNotes) return current;
+                    if (current >= filterNotes.length) return current;
+                    return current + PAGE_SIZE;
+                });
+            }
+        }
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [filterNotes]);
+
+    useEffect(() => {
+        setVisibleCount(PAGE_SIZE);
+      }, [search]);
+
     return (
         <div className='max-w-md w-96 mx-auto mt-6 mb-20'>
 
@@ -37,7 +62,7 @@ export default function Entries() {
                 type="search"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="fixed w-96 rounded-full bg-neutral-700/30 backdrop-blur-lg p-2 px-4 outline-none mb-6 border-t-[1.5px] border-neutral-700 focus:border-0 text-white"
+                className="fixed w-96 rounded-full bg-[#121212] p-2 px-4 outline-none mb-6 border border-neutral-800 focus:border-0 text-white placeholder:text-neutral-600"
                 placeholder="Search note..."
             />
 
@@ -45,17 +70,17 @@ export default function Entries() {
 
             <div className="grid grid-cols-1 gap-6 pt-16">
                 {filterNotes?.length ? (
-                    filterNotes.map((item) => (
+                    filterNotes.slice(0, visibleCount).map((item) => (
                         <div key={item.id}>
 
-                            <div className='text-neutral-500 font-black text-lg flex justify-center gap-4 mb-2 px-4'>
+                            <div className='text-neutral-500 font-black text-2xl flex justify-center gap-4 mb-4 px-4'>
                                 {format(new Date(item.note_date + 'T00:00:00'), 'MMMM d, yyyy')}
                                 <button onClick={() => { setModalOpen(true); setItemDate(item.note_date) }} className='hover:scale-125 transition-all'>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 20 20"><path fill="#737373" d="M10 1.6a8.4 8.4 0 1 0 0 16.8a8.4 8.4 0 0 0 0-16.8zm5 9.4H5V9h10v2z" /></svg>
                                 </button>
                             </div>
 
-                            <div className='p-6 text-neutral-300 whitespace-pre-line break-words component-bg w-full'>
+                            <div className='p-6 text-neutral-400 text-base/7 whitespace-pre-line break-words component-bg w-full'>
 
                                 {item.decrypted_content === '' ? 'Deleted' : item.decrypted_content}
                             </div>
@@ -76,7 +101,7 @@ export default function Entries() {
                 onClose={() => setModalOpen(false)}
             >
                 <div className='text-center text-white '>Delete this note permanently?
-                <p className='text-white/50'>Don't worry, your streak will be preserved</p>
+                    <p className='text-white/50'>Don't worry, your streak will be preserved</p>
                 </div>
 
                 <div className="flex gap-2 justify-center">
