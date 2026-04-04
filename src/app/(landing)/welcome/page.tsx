@@ -155,22 +155,22 @@ const forWhom = [
 
 const features = [
   { Icon: IconGlobe, title: "Works everywhere", desc: "Sign in with Google. No install required. Your journal is accessible from any device, any browser." },
-  { Icon: IconPen, title: "Ultra-minimalist", desc: "No formatting, no distracting prompts, no AI suggestions. Just an empty page and your words." },
+  { Icon: IconPen, title: "Ultra-minimalist", desc: "No formatting, no distracting prompts, no AI suggestions, no other media. Just an empty page and your words." },
   { Icon: IconShield, title: "Fully private", desc: "Your data is encrypted at the high-security database. This means the second your 100 words hit the database, they are instantly scrambled into unreadable code (AES-256-GCM)." },
   { Icon: IconFlame, title: "Streak & habit tracking", desc: "Visual streaks and writing patterns help you build a habit that actually sticks over time." },
   { Icon: IconZap, title: "Designed constraints", desc: "The 100-word limit makes journaling feel focused and achievable. Constraints create freedom." },
-  { Icon: IconPhone, title: "Export", desc: "Export entries as plain text at any time you want" },
+  { Icon: IconPhone, title: "Export", desc: "Export entries as plain text at any time you want." },
 ];
 
 const faq = [
   { q: "Will my journal entries stay private?", a: "We use AES-256-GCM authenticated encryption to protect every entry. Your data is encrypted at the database level, meaning even if someone gained access to the raw database, your words would look like a chaotic string of random characters. With Row-Level Security (RLS) combined with encryption, only your authenticated session can trigger the decryption process." },
-  { q: "Is the app available for Android and iOS?", a: "100 Words is a Progressive Web App. Install it on Android or iOS directly from your browser — no app store required. It works offline, too." },
-  { q: "Can I export my journal entries?", a: "Yes. Download all your data in plain text or CSV at any time. Your journal is yours — we never lock you in. Export is free on all plans." },
+  { q: "Is the app available for Android and iOS?", a: "100 Words is a Progressive Web App. Install it on Android or iOS directly from your browser — no app store required." },
+  { q: "Can I add photos or audio?", a: "100words is designed to work exclusively with text and won't support other media. The app's design is focused on this single function and makes it as perfect as possible." },
   { q: "Does the Pro plan use AI to write for me?", a: "No. AI in Pro only reads and reflects back — it offers insights and patterns after you've written. It never writes entries for you. The words are always yours." },
 ];
 
 const freeFeatures = ["Unlimited notes", "No ads", "Export your data", "Privacy first", "Unlimited devices"];
-const proFeatures = ["Everything in Free", "Daily AI review", "Weekly AI review", "Random note feature", "And more.."];
+const proFeatures = ["AI reviews", "Random note", "Favorites", "Hard mode", "And more.."];
 
 const streakDays = [true, true, true, true, true, true, false];
 
@@ -518,11 +518,12 @@ export default function HomePage() {
       <footer className="border-t border-[rgb(22,22,22)] px-10 py-10 max-w-[1200px] mx-auto flex items-center justify-between flex-wrap gap-4">
         <span className="text-[15px] text-[#444]">100words — journal for mental health</span>
         <div className="flex gap-7">
+          <a href="/about" className="text-[14px] text-[#555] transition-colors hover:text-[#e8e6e3]">About</a>
           <a href="/privacy" className="text-[14px] text-[#555] transition-colors hover:text-[#e8e6e3]">Privacy</a>
           <a href="/tos" className="text-[14px] text-[#555] transition-colors hover:text-[#e8e6e3]">Terms</a>
-          <a href="https://100words.app/" target="_blank" rel="noopener noreferrer" className="text-[14px] text-[#555] transition-colors hover:text-[#e8e6e3]">
-            100words.app
-          </a>
+          <p className="text-[14px] text-[#555]">
+          Contact us: <a href="mailto:help@100words.app" className="hover:text-[#e8e6e3] transition-colors">help@100words.app</a>
+          </p>
         </div>
       </footer>
     </>

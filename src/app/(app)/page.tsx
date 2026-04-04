@@ -97,7 +97,7 @@ export default function Home() {
 
                         <p className='text-neutral-400 pt-2 text-base/7'>{todaysNote.slice(0, 300) + '...'}</p>
                         <button className='w-full mt-4 rounded-full p-2 font-semibold component-bg border-[1.5px] border-neutral-800' onClick={() => setNewEntryOpen(true)}>Edit
-                            <div className="text-xs text-neutral-500 px-6 text-center font-normal">Can be edited until midnight</div>
+                            {/* <div className="text-xs text-neutral-500 px-6 text-center font-normal">Can be edited until midnight</div> */}
                         </button>
                     </div>
 

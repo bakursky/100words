@@ -33,17 +33,23 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT: DO NOT REMOVE auth.getUser()
 
+  const publicRoutes = [
+    '/login',
+    '/auth',
+    '/welcome',
+    '/privacy',
+    '/tos',
+  ]
+  
+  const isPublic = publicRoutes.some((route) =>
+    request.nextUrl.pathname.startsWith(route)
+  )
+  
   const {
     data: { user },
   } = await supabase.auth.getUser()
-
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith('/login') &&
-    !request.nextUrl.pathname.startsWith('/auth') &&
-    !request.nextUrl.pathname.startsWith('/welcome')
-  ) {
-    // no user, potentially respond by redirecting the user to the welcome page
+  
+  if (!user && !isPublic) {
     const url = request.nextUrl.clone()
     url.pathname = '/welcome'
     return NextResponse.redirect(url)
